@@ -1,0 +1,2722 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  BookOpen,
+  Calculator,
+  Award,
+  BrainCircuit,
+  LayoutDashboard,
+  User,
+  CheckCircle2,
+  Circle,
+  Play,
+  ArrowRight,
+  ArrowLeft,
+  Flame,
+  Star,
+  Trophy,
+  Clock,
+  Sparkles,
+  Send,
+  RefreshCw,
+  ChevronRight,
+  GraduationCap,
+  Target,
+  HelpCircle,
+  Check,
+  X,
+  Menu,
+  Sliders,
+  History,
+  Sigma,
+  TrendingUp,
+  FunctionSquare,
+  Lightbulb,
+  Edit3,
+  Save
+} from 'lucide-react';
+
+// ============================================================================
+// DATA MATERI PEMBELAJARAN SMA (KELAS 10, 11, 12) - LENGKAP & TERSTRUKTUR
+// ============================================================================
+const MATERIALS_DATA = [
+  // -------------------- KELAS 10 --------------------
+  {
+    id: 'k10-persamaan',
+    grade: 10,
+    title: 'Persamaan dan Pertidaksamaan',
+    category: 'Aljabar Dasar',
+    duration: '20 mnt',
+    xp: 50,
+    summary: 'Memahami konsep nilai mutlak, persamaan linear satu variabel, serta penyelesaian pertidaksamaan rasional dan irasional.',
+    concept: 'Persamaan adalah kalimat terbuka yang memuat tanda sama dengan (=), sedangkan pertidaksamaan menggunakan tanda ketaksamaan (<, >, ≤, ≥). Pada nilai mutlak |x|, jarak suatu bilangan dari titik nol pada garis bilangan selalu bernilai positif atau nol.',
+    formulas: [
+      { label: 'Definisi Nilai Mutlak', formula: '|x| = x jika x ≥ 0, dan -x jika x < 0' },
+      { label: 'Sifat Pertidaksamaan Mutlak (<)', formula: '|f(x)| < a  ⇔  -a < f(x) < a  (untuk a > 0)' },
+      { label: 'Sifat Pertidaksamaan Mutlak (>)', formula: '|f(x)| > a  ⇔  f(x) < -a  atau  f(x) > a' }
+    ],
+    example: {
+      question: 'Tentukan himpunan penyelesaian dari |2x - 3| = 7!',
+      steps: [
+        'Gunakan definisi nilai mutlak: |u| = a berarti u = a atau u = -a.',
+        'Kemungkinan 1: 2x - 3 = 7  ⇒  2x = 10  ⇒  x = 5.',
+        'Kemungkinan 2: 2x - 3 = -7  ⇒  2x = -4  ⇒  x = -2.',
+        'Jadi, himpunan penyelesaiannya adalah {-2, 5}.'
+      ]
+    },
+    practice: {
+      question: 'Nilai x yang memenuhi pertidaksamaan |x - 4| ≤ 3 adalah...',
+      options: ['1 ≤ x ≤ 7', '-7 ≤ x ≤ -1', 'x ≤ 1 atau x ≥ 7', '-1 ≤ x ≤ 7'],
+      correctIndex: 0,
+      explanation: 'Berdasarkan sifat |f(x)| ≤ a ⇔ -a ≤ f(x) ≤ a, maka -3 ≤ x - 4 ≤ 3. Tambahkan 4 pada ketiga ruas sehingga diperoleh 1 ≤ x ≤ 7.'
+    }
+  },
+  {
+    id: 'k10-kuadrat',
+    grade: 10,
+    title: 'Fungsi Kuadrat',
+    category: 'Aljabar & Grafik',
+    duration: '25 mnt',
+    xp: 60,
+    summary: 'Menganalisis grafik parabola, titik puncak, sumbu simetri, serta pengaruh diskriminan terhadap posisi kurva.',
+    concept: 'Fungsi kuadrat memiliki bentuk umum f(x) = ax² + bx + c dengan a ≠ 0. Grafiknya berbentuk parabola simetris. Nilai a menentukan arah terbukanya parabola (ke atas jika a > 0, ke bawah jika a < 0), sedangkan diskriminan D menentukan banyaknya titik potong terhadap sumbu-X.',
+    formulas: [
+      { label: 'Sumbu Simetri', formula: 'xₚ = -b / (2a)' },
+      { label: 'Nilai Optimum (Puncak y)', formula: 'yₚ = -D / (4a) = f(xₚ)' },
+      { label: 'Diskriminan', formula: 'D = b² - 4ac' },
+      { label: 'Menyusun Fungsi (Puncak)', formula: 'f(x) = a(x - xₚ)² + yₚ' }
+    ],
+    example: {
+      question: 'Tentukan koordinat titik puncak dari fungsi kuadrat f(x) = x² - 6x + 5!',
+      steps: [
+        'Identifikasi koefisien: a = 1, b = -6, c = 5.',
+        'Hitung sumbu simetri: xₚ = -(-6) / (2 · 1) = 6 / 2 = 3.',
+        'Substitusi xₚ = 3 ke f(x): yₚ = (3)² - 6(3) + 5 = 9 - 18 + 5 = -4.',
+        'Jadi, koordinat titik puncaknya adalah (3, -4).'
+      ]
+    },
+    practice: {
+      question: 'Sumbu simetri dari grafik fungsi kuadrat f(x) = 2x² + 8x - 10 adalah...',
+      options: ['x = 2', 'x = -2', 'x = 4', 'x = -4'],
+      correctIndex: 1,
+      explanation: 'Rumus sumbu simetri adalah x = -b / (2a). Dengan a = 2 dan b = 8, diperoleh x = -8 / (2 × 2) = -8 / 4 = -2.'
+    }
+  },
+  {
+    id: 'k10-trigonometri',
+    grade: 10,
+    title: 'Trigonometri Dasar',
+    category: 'Geometri & Sudut',
+    duration: '30 mnt',
+    xp: 65,
+    summary: 'Perbandingan trigonometri pada segitiga siku-siku, sudut istimewa, dan relasi sudut di berbagai kuadran.',
+    concept: 'Trigonometri mempelajari hubungan antara sudut dan panjang sisi segitiga. Pada segitiga siku-siku dengan sudut θ, dikenal istilah sisi Depan (De), Samping (Sa), dan Miring (Mi) yang membentuk rasio Sinus, Cosinus, dan Tangen.',
+    formulas: [
+      { label: 'Rasio Dasar (SinDeMi, CosSaMi, TanDeSa)', formula: 'sin θ = De/Mi,  cos θ = Sa/Mi,  tan θ = De/Sa' },
+      { label: 'Identitas Pythagoras', formula: 'sin²θ + cos²θ = 1' },
+      { label: 'Tanda Kuadran (Semua-Sin-Tan-Cos)', formula: 'K.I: Semua (+), K.II: sin (+), K.III: tan (+), K.IV: cos (+)' }
+    ],
+    example: {
+      question: 'Hitunglah nilai dari sin 30° + cos 60° - tan 45°!',
+      steps: [
+        'Ingat tabel sudut istimewa: sin 30° = 1/2, cos 60° = 1/2, dan tan 45° = 1.',
+        'Substitusikan nilai-nilai tersebut: 1/2 + 1/2 - 1.',
+        'Hitung hasilnya: 1 - 1 = 0.'
+      ]
+    },
+    practice: {
+      question: 'Diketahui segitiga siku-siku dengan panjang sisi depan sudut α adalah 3 cm dan sisi sampingnya 4 cm. Nilai sin α adalah...',
+      options: ['3/4', '4/5', '3/5', '5/3'],
+      correctIndex: 2,
+      explanation: 'Cari sisi miring dengan Pythagoras: Mi = √(3² + 4²) = √25 = 5 cm. Maka sin α = De/Mi = 3/5.'
+    }
+  },
+  {
+    id: 'k10-spl',
+    grade: 10,
+    title: 'Sistem Persamaan Linear',
+    category: 'Aljabar Linear',
+    duration: '25 mnt',
+    xp: 55,
+    summary: 'Menyelesaikan sistem persamaan linear dua dan tiga variabel (SPLDV & SPLTV) dengan metode eliminasi dan substitusi.',
+    concept: 'Sistem Persamaan Linear Tiga Variabel (SPLTV) terdiri dari tiga persamaan linear dengan tiga variabel (biasanya x, y, z). Penyelesaiannya adalah tripel berurutan (x, y, z) yang memenuhi ketiga persamaan secara bersamaan.',
+    formulas: [
+      { label: 'Bentuk Umum SPLTV', formula: 'a₁x + b₁y + c₁z = d₁' },
+      { label: 'Metode Gabungan', formula: 'Eliminasi 1 variabel → SPLDV → Eliminasi/Substitusi → Nilai semua variabel' }
+    ],
+    example: {
+      question: 'Jika 2x + y = 11 dan x - y = 1, tentukan nilai dari x + 2y!',
+      steps: [
+        'Eliminasi variabel y dengan menjumlahkan kedua persamaan: (2x + y) + (x - y) = 11 + 1 ⇒ 3x = 12 ⇒ x = 4.',
+        'Substitusi x = 4 ke persamaan x - y = 1: 4 - y = 1 ⇒ y = 3.',
+        'Hitung nilai x + 2y = 4 + 2(3) = 4 + 6 = 10.'
+      ]
+    },
+    practice: {
+      question: 'Harga 2 buku dan 1 pensil adalah Rp11.000, sedangkan harga 1 buku dan 3 pensil adalah Rp13.000. Harga 1 buku adalah...',
+      options: ['Rp3.000', 'Rp4.000', 'Rp5.000', 'Rp6.000'],
+      correctIndex: 1,
+      explanation: 'Misal buku = b, pensil = p. 2b + p = 11.000 (×3) ⇒ 6b + 3p = 33.000. Kurangi dengan b + 3p = 13.000, didapat 5b = 20.000 ⇒ b = Rp4.000.'
+    }
+  },
+  {
+    id: 'k10-eksponen-log',
+    grade: 10,
+    title: 'Eksponen dan Logaritma',
+    category: 'Aljabar Lanjut',
+    duration: '30 mnt',
+    xp: 65,
+    summary: 'Sifat-sifat bilangan berpangkat, bentuk akar, serta konsep logaritma sebagai invers dari eksponen.',
+    concept: 'Eksponen menyatakan perkalian berulang suatu bilangan dengan dirinya sendiri. Logaritma adalah operasi kebalikan (invers) dari eksponen yang mencari besar pangkat dari suatu bilangan pokok (basis).',
+    formulas: [
+      { label: 'Sifat Perkalian & Pembagian Pangkat', formula: 'aᵐ · aⁿ = aᵐ⁺ⁿ   dan   aᵐ / aⁿ = aᵐ⁻ⁿ' },
+      { label: 'Definisi Logaritma', formula: 'ᵃlog b = c  ⇔  aᶜ = b   (a > 0, a ≠ 1, b > 0)' },
+      { label: 'Sifat Penjumlahan Logaritma', formula: 'ᵃlog(b · c) = ᵃlog b + ᵃlog c' },
+      { label: 'Sifat Pangkat Numerus', formula: 'ᵃlog(bⁿ) = n · ᵃlog b' }
+    ],
+    example: {
+      question: 'Hitunglah nilai dari ²log 24 + ²log 4 - ²log 3!',
+      steps: [
+        'Gunakan sifat penjumlahan dan pengurangan logaritma dengan basis yang sama (2):',
+        '²log ((24 × 4) / 3) = ²log (8 × 4) = ²log 32.',
+        'Karena 32 = 2⁵, maka ²log 2⁵ = 5.'
+      ]
+    },
+    practice: {
+      question: 'Nilai dari ³log 54 - ³log 2 adalah...',
+      options: ['2', '3', '4', '9'],
+      correctIndex: 1,
+      explanation: '³log 54 - ³log 2 = ³log (54 / 2) = ³log 27. Karena 3³ = 27, maka hasilnya adalah 3.'
+    }
+  },
+  {
+    id: 'k10-barisan',
+    grade: 10,
+    title: 'Barisan dan Deret',
+    category: 'Pola Bilangan',
+    duration: '25 mnt',
+    xp: 55,
+    summary: 'Menentukan suku ke-n dan jumlah n suku pertama pada barisan aritmetika, geometri, dan deret geometri tak hingga.',
+    concept: 'Barisan aritmetika memiliki selisih (beda, b) yang tetap antar dua suku berurutan. Barisan geometri memiliki perbandingan (rasio, r) yang tetap antar dua suku berurutan.',
+    formulas: [
+      { label: 'Suku ke-n Aritmetika', formula: 'Uₙ = a + (n - 1)b' },
+      { label: 'Jumlah n Suku Aritmetika', formula: 'Sₙ = (n/2)(2a + (n - 1)b)' },
+      { label: 'Suku ke-n Geometri', formula: 'Uₙ = a · rⁿ⁻¹' },
+      { label: 'Deret Geometri Tak Hingga', formula: 'S∞ = a / (1 - r)   (untuk -1 < r < 1)' }
+    ],
+    example: {
+      question: 'Diketahui barisan aritmetika: 4, 7, 10, 13, ... Tentukan suku ke-20!',
+      steps: [
+        'Tentukan suku pertama (a) = 4 dan beda (b) = 7 - 4 = 3.',
+        'Gunakan rumus Uₙ = a + (n - 1)b untuk n = 20.',
+        'U₂₀ = 4 + (20 - 1)(3) = 4 + 19(3) = 4 + 57 = 61.'
+      ]
+    },
+    practice: {
+      question: 'Jumlah deret geometri tak hingga 12 + 6 + 3 + 1,5 + ... adalah...',
+      options: ['18', '20', '24', '36'],
+      correctIndex: 2,
+      explanation: 'Suku pertama a = 12 dan rasio r = 6/12 = 1/2. Maka S∞ = a / (1 - r) = 12 / (1 - 1/2) = 12 / (1/2) = 24.'
+    }
+  },
+
+  // -------------------- KELAS 11 --------------------
+  {
+    id: 'k11-matriks',
+    grade: 11,
+    title: 'Matriks',
+    category: 'Aljabar Matriks',
+    duration: '30 mnt',
+    xp: 70,
+    summary: 'Operasi penjumlahan, perkalian matriks, determinan matriks ordo 2×2 dan 3×3, serta invers matriks.',
+    concept: 'Matriks adalah susunan bilangan berbentuk persegi panjang yang diatur menurut baris dan kolom dalam tanda kurung. Dua matriks dapat dikalikan jika jumlah kolom matriks pertama sama dengan jumlah baris matriks kedua.',
+    formulas: [
+      { label: 'Determinan Matriks 2×2', formula: 'det(A) = |A| = ad - bc' },
+      { label: 'Invers Matriks 2×2', formula: 'A⁻¹ = (1 / (ad - bc)) · [ d  -b ; -c  a ]' },
+      { label: 'Sifat Persamaan Matriks', formula: 'AX = B  ⇒  X = A⁻¹B' }
+    ],
+    example: {
+      question: 'Hitunglah determinan dari matriks A = [ 4  3 ; 2  5 ]!',
+      steps: [
+        'Identifikasi elemen matriks: a = 4, b = 3, c = 2, d = 5.',
+        'Gunakan rumus determinan 2×2: det(A) = ad - bc.',
+        'det(A) = (4 × 5) - (3 × 2) = 20 - 6 = 14.'
+      ]
+    },
+    practice: {
+      question: 'Jika matriks M = [ 3  2 ; 5  4 ], maka determinan matriks M adalah...',
+      options: ['2', '-2', '22', '12'],
+      correctIndex: 0,
+      explanation: 'det(M) = (3 × 4) - (2 × 5) = 12 - 10 = 2.'
+    }
+  },
+  {
+    id: 'k11-proglin',
+    grade: 11,
+    title: 'Program Linear',
+    category: 'Optimasi',
+    duration: '30 mnt',
+    xp: 65,
+    summary: 'Menentukan daerah himpunan penyelesaian pertidaksamaan linear dua variabel dan mencari nilai optimum fungsi objektif.',
+    concept: 'Program linear digunakan untuk memecahkan masalah optimasi (memaksimumkan keuntungan atau meminimumkan biaya) dengan kendala-kendala yang dinyatakan dalam sistem pertidaksamaan linear.',
+    formulas: [
+      { label: 'Fungsi Objektif', formula: 'f(x, y) = ax + by' },
+      { label: 'Metode Uji Titik Pojok', formula: 'Substitusikan setiap titik sudut DHP ke fungsi objektif f(x, y)' }
+    ],
+    example: {
+      question: 'Tentukan nilai maksimum f(x, y) = 3x + 4y pada daerah dengan titik pojok (0,0), (4,0), (2,3), dan (0,4)!',
+      steps: [
+        'Uji titik (0,0): f(0,0) = 3(0) + 4(0) = 0.',
+        'Uji titik (4,0): f(4,0) = 3(4) + 4(0) = 12.',
+        'Uji titik (2,3): f(2,3) = 3(2) + 4(3) = 6 + 12 = 18.',
+        'Uji titik (0,4): f(0,4) = 3(0) + 4(4) = 16.',
+        'Nilai maksimumnya adalah 18 di titik (2,3).'
+      ]
+    },
+    practice: {
+      question: 'Nilai minimum dari fungsi objektif Z = 5x + 2y yang memenuhi titik sudut (2, 4), (5, 1), dan (3, 3) adalah...',
+      options: ['18', '27', '21', '15'],
+      correctIndex: 0,
+      explanation: 'Z(2,4) = 5(2)+2(4) = 18; Z(5,1) = 5(5)+2(1) = 27; Z(3,3) = 5(3)+2(3) = 21. Nilai minimum adalah 18.'
+    }
+  },
+  {
+    id: 'k11-triglanjut',
+    grade: 11,
+    title: 'Trigonometri Lanjutan',
+    category: 'Analitik Trigonometri',
+    duration: '35 mnt',
+    xp: 75,
+    summary: 'Rumus jumlah dan selisih dua sudut, sudut rangkap, serta persamaan trigonometri sederhana.',
+    concept: 'Trigonometri lanjutan memperluas identitas dasar untuk menghitung nilai sudut non-istimewa (seperti 75° atau 15°) melalui penjumlahan/selisih sudut istimewa dan rumus sudut rangkap.',
+    formulas: [
+      { label: 'Sinus Jumlah & Selisih', formula: 'sin(α ± β) = sin α cos β ± cos α sin β' },
+      { label: 'Cosinus Jumlah & Selisih', formula: 'cos(α ± β) = cos α cos β ∓ sin α sin β' },
+      { label: 'Sudut Rangkap Sinus & Cosinus', formula: 'sin 2α = 2 sin α cos α   |   cos 2α = cos²α - sin²α' }
+    ],
+    example: {
+      question: 'Sederhanakan bentuk 2 sin 15° cos 15°!',
+      steps: [
+        'Ingat identitas sudut rangkap: 2 sin α cos α = sin 2α.',
+        'Dengan α = 15°, maka 2 sin 15° cos 15° = sin(2 × 15°) = sin 30°.',
+        'Nilai dari sin 30° adalah 1/2.'
+      ]
+    },
+    practice: {
+      question: 'Nilai dari sin 45° cos 15° + cos 45° sin 15° adalah...',
+      options: ['1/2', '1/2 √2', '1/2 √3', '1'],
+      correctIndex: 2,
+      explanation: 'Gunakan rumus sin(α + β) = sin α cos β + cos α sin β. Jadi sin(45° + 15°) = sin 60° = 1/2 √3.'
+    }
+  },
+  {
+    id: 'k11-limit',
+    grade: 11,
+    title: 'Limit Fungsi',
+    category: 'Kalkulus Dasar',
+    duration: '30 mnt',
+    xp: 70,
+    summary: 'Konsep pendekatan nilai fungsi, strategi pemfaktoran, perkalian sekawan, dan limit menuju tak hingga.',
+    concept: 'Limit fungsi f(x) untuk x mendekati c adalah nilai yang didekati oleh f(x) ketika x semakin dekat ke c (dari kiri maupun kanan), meskipun fungsi tersebut mungkin tidak terdefinisi tepat di x = c.',
+    formulas: [
+      { label: 'Langkah Utama Limit Aljabar', formula: '1. Substitusi langsung  →  2. Jika 0/0, Faktorkan atau Kalikan Sekawan' },
+      { label: 'Limit Tak Hingga Pecahan', formula: 'lim (x→∞) (axᵐ + ...)/(bxⁿ + ...) = a/b jika m = n' }
+    ],
+    example: {
+      question: 'Tentukan nilai dari lim (x→3) (x² - 9) / (x - 3)!',
+      steps: [
+        'Jika disubstitusi x = 3 menghasilkan bentuk tak tentu 0/0.',
+        'Faktorkan pembilang: x² - 9 = (x - 3)(x + 3).',
+        'Sederhanakan faktor (x - 3): lim (x→3) (x + 3).',
+        'Substitusikan x = 3: 3 + 3 = 6.'
+      ]
+    },
+    practice: {
+      question: 'Nilai dari lim (x→2) (x² + 3x - 10) / (x - 2) adalah...',
+      options: ['5', '7', '0', '3'],
+      correctIndex: 1,
+      explanation: 'Faktorkan pembilang: (x + 5)(x - 2) / (x - 2) = x + 5. Substitusi x = 2 menghasilkan 2 + 5 = 7.'
+    }
+  },
+  {
+    id: 'k11-turunan',
+    grade: 11,
+    title: 'Turunan Fungsi (Diferensial)',
+    category: 'Kalkulus Diferensial',
+    duration: '35 mnt',
+    xp: 75,
+    summary: 'Konsep laju perubahan sesaat, aturan pangkat, aturan rantai, serta penentuan gradien garis singgung kurva.',
+    concept: 'Turunan pertama fungsi f(x), dilambangkan f′(x) atau dy/dx, mengukur laju perubahan sesaat dari fungsi tersebut dan secara geometris menyatakan gradien garis singgung kurva di titik x.',
+    formulas: [
+      { label: 'Aturan Pangkat', formula: 'f(x) = a·xⁿ  ⇒  f′(x) = a·n·xⁿ⁻¹' },
+      { label: 'Turunan Konstanta', formula: 'f(x) = c  ⇒  f′(x) = 0' },
+      { label: 'Aturan Rantai', formula: 'y = [u(x)]ⁿ  ⇒  y′ = n·[u(x)]ⁿ⁻¹ · u′(x)' }
+    ],
+    example: {
+      question: 'Tentukan turunan pertama dari f(x) = 4x³ - 5x² + 7x - 9!',
+      steps: [
+        'Turunkan setiap suku menggunakan aturan pangkat:',
+        'Turunan 4x³ adalah 4 · 3x² = 12x².',
+        'Turunan -5x² adalah -5 · 2x¹ = -10x.',
+        'Turunan 7x adalah 7, dan turunan konstanta -9 adalah 0.',
+        'Jadi, f′(x) = 12x² - 10x + 7.'
+      ]
+    },
+    practice: {
+      question: 'Jika f(x) = 2x³ - 6x + 4, maka nilai dari f′(2) adalah...',
+      options: ['12', '18', '24', '6'],
+      correctIndex: 1,
+      explanation: 'f′(x) = 6x² - 6. Substitusi x = 2: f′(2) = 6(2)² - 6 = 6(4) - 6 = 24 - 6 = 18.'
+    }
+  },
+  {
+    id: 'k11-statistika',
+    grade: 11,
+    title: 'Statistika',
+    category: 'Analisis Data',
+    duration: '30 mnt',
+    xp: 65,
+    summary: 'Ukuran pemusatan data (mean, median, modus) dan ukuran penyebaran data (jangkauan, simpangan baku, varians).',
+    concept: 'Statistika membahas cara mengumpulkan, menyajikan, dan menganalisis data. Ukuran pemusatan menunjukkan pusat distribusi data, sedangkan ukuran penyebaran menunjukkan seberapa jauh data tersebar dari rata-ratanya.',
+    formulas: [
+      { label: 'Rata-rata (Mean)', formula: 'x̄ = Σ(fᵢ · xᵢ) / Σfᵢ' },
+      { label: 'Median Data Kelompok', formula: 'Me = Tb + [ ((1/2)n - Fₖ) / fₘ ] · p' },
+      { label: 'Modus Data Kelompok', formula: 'Mo = Tb + [ d₁ / (d₁ + d₂) ] · p' }
+    ],
+    example: {
+      question: 'Tentukan mean dan median dari data: 6, 8, 5, 9, 7!',
+      steps: [
+        'Urutkan data dari terkecil: 5, 6, 7, 8, 9.',
+        'Mean (x̄) = (5 + 6 + 7 + 8 + 9) / 5 = 35 / 5 = 7.',
+        'Median adalah nilai tengah dari 5 data terurut (data ke-3) = 7.'
+      ]
+    },
+    practice: {
+      question: 'Rata-rata nilai ulangan 4 siswa adalah 80. Jika ditambah nilai Budi, rata-ratanya menjadi 82. Nilai Budi adalah...',
+      options: ['85', '88', '90', '92'],
+      correctIndex: 2,
+      explanation: 'Total nilai 4 siswa = 4 × 80 = 320. Total nilai 5 siswa = 5 × 82 = 410. Maka nilai Budi = 410 - 320 = 90.'
+    }
+  },
+
+  // -------------------- KELAS 12 --------------------
+  {
+    id: 'k12-integral',
+    grade: 12,
+    title: 'Integral',
+    category: 'Kalkulus Integral',
+    duration: '35 mnt',
+    xp: 80,
+    summary: 'Integral tak tentu sebagai anti-turunan dan integral tentu untuk menghitung luas daerah di bawah kurva.',
+    concept: 'Integral adalah operasi kebalikan dari turunan (anti-diferensial). Integral tak tentu menghasilkan fungsi umum dengan konstanta C, sedangkan integral tentu memiliki batas atas dan batas bawah yang menghasilkan nilai numerik.',
+    formulas: [
+      { label: 'Integral Tak Tentu Pangkat', formula: '∫ a·xⁿ dx = [a / (n + 1)] · xⁿ⁺¹ + C   (n ≠ -1)' },
+      { label: 'Teorema Dasar Kalkulus (Tentu)', formula: '∫ₐᵇ f(x) dx = F(b) - F(a)' }
+    ],
+    example: {
+      question: 'Hitunglah hasil dari ∫ (6x² - 4x + 3) dx!',
+      steps: [
+        'Integralkan tiap suku dengan menaikkan pangkatnya sebesar 1:',
+        '∫ 6x² dx = (6 / 3)x³ = 2x³.',
+        '∫ -4x dx = (-4 / 2)x² = -2x².',
+        '∫ 3 dx = 3x.',
+        'Tambahkan konstanta C: 2x³ - 2x² + 3x + C.'
+      ]
+    },
+    practice: {
+      question: 'Hasil dari integral tentu ∫₁³ (2x + 1) dx adalah...',
+      options: ['8', '10', '12', '14'],
+      correctIndex: 1,
+      explanation: 'Anti-turunan dari 2x + 1 adalah F(x) = x² + x. Hitung F(3) - F(1) = (3² + 3) - (1² + 1) = 12 - 2 = 10.'
+    }
+  },
+  {
+    id: 'k12-dimensi3',
+    grade: 12,
+    title: 'Dimensi Tiga',
+    category: 'Geometri Ruang',
+    duration: '35 mnt',
+    xp: 75,
+    summary: 'Menentukan jarak antar titik, jarak titik ke garis, dan jarak titik ke bidang pada bangun ruang kubus dan limas.',
+    concept: 'Analisis jarak dalam bangun ruang (dimensi tiga) bertumpu pada proyeksi tegak lurus dan penerapan Teorema Pythagoras pada segitiga siku-siku yang terbentuk di dalam ruang.',
+    formulas: [
+      { label: 'Diagonal Sisi Kubus (rusuk a)', formula: 'dₛ = a√2' },
+      { label: 'Diagonal Ruang Kubus (rusuk a)', formula: 'dᵣ = a√3' },
+      { label: 'Jarak Titik ke Garis', formula: 'Panjang ruas garis tegak lurus dari titik ke garis tersebut' }
+    ],
+    example: {
+      question: 'Diketahui kubus ABCD.EFGH dengan panjang rusuk 6 cm. Tentukan jarak titik A ke titik G!',
+      steps: [
+        'Ruas garis AG merupakan diagonal ruang kubus ABCD.EFGH.',
+        'Gunakan rumus cepat diagonal ruang kubus: dᵣ = a√3.',
+        'Dengan a = 6 cm, maka jarak A ke G adalah 6√3 cm.'
+      ]
+    },
+    practice: {
+      question: 'Sebuah kubus memiliki panjang rusuk 8 cm. Panjang diagonal bidang (diagonal sisi) kubus tersebut adalah...',
+      options: ['8 cm', '8√2 cm', '8√3 cm', '16 cm'],
+      correctIndex: 1,
+      explanation: 'Dengan Teorema Pythagoras pada sisi kubus: √(8² + 8²) = √(64 × 2) = 8√2 cm.'
+    }
+  },
+  {
+    id: 'k12-peluang',
+    grade: 12,
+    title: 'Peluang & Kaidah Pencacahan',
+    category: 'Kombinatorika',
+    duration: '30 mnt',
+    xp: 75,
+    summary: 'Aturan perkalian, permutasi, kombinasi, serta menghitung peluang kejadian majemuk dan saling bebas.',
+    concept: 'Permutasi digunakan untuk menghitung susunan objek yang memperhatikan urutan (seperti ketua-sekretaris), sedangkan Kombinasi digunakan ketika urutan tidak diperhatikan (seperti memilih tim).',
+    formulas: [
+      { label: 'Permutasi', formula: 'P(n, r) = n! / (n - r)!' },
+      { label: 'Kombinasi', formula: 'C(n, r) = n! / [ r! · (n - r)! ]' },
+      { label: 'Peluang Kejadian A', formula: 'P(A) = n(A) / n(S)' }
+    ],
+    example: {
+      question: 'Dari 6 siswa akan dipilih 2 orang untuk menjadi perwakilan lomba tanpa memperhatikan urutan. Banyak cara memilihnya adalah...',
+      steps: [
+        'Karena urutan tidak diperhatikan, gunakan Kombinasi C(6, 2).',
+        'C(6, 2) = 6! / (2! · 4!) = (6 × 5 × 4!) / (2 × 1 × 4!).',
+        'Sederhanakan: (6 × 5) / 2 = 30 / 2 = 15 cara.'
+      ]
+    },
+    practice: {
+      question: 'Pada pelemparan dua buah dadu secara bersamaan, peluang munculnya mata dadu berjumlah 7 adalah...',
+      options: ['1/12', '1/6', '5/36', '7/36'],
+      correctIndex: 1,
+      explanation: 'Total ruang sampel n(S) = 36. Pasangan berjumlah 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) ada 6. Peluang = 6/36 = 1/6.'
+    }
+  },
+  {
+    id: 'k12-distribusi',
+    grade: 12,
+    title: 'Distribusi Probabilitas',
+    category: 'Statistika Inferensial',
+    duration: '30 mnt',
+    xp: 75,
+    summary: 'Variabel acak diskrit, distribusi binomial (Bernoulli), dan pengenalan distribusi normal.',
+    concept: 'Distribusi Binomial memodelkan banyaknya keberhasilan dalam n kali percobaan saling bebas yang masing-masing hanya memiliki dua hasil (sukses atau gagal) dengan peluang sukses p yang tetap.',
+    formulas: [
+      { label: 'Fungsi Peluang Binomial', formula: 'P(X = x) = C(n, x) · pˣ · qⁿ⁻ˣ   (dengan q = 1 - p)' },
+      { label: 'Rata-rata & Varians Binomial', formula: 'μ = n · p    dan    σ² = n · p · q' }
+    ],
+    example: {
+      question: 'Sebuah koin setimbang dilempar 3 kali. Tentukan peluang muncul tepat 2 kali gambar!',
+      steps: [
+        'Diketahui: n = 3, x = 2, p = 1/2, dan q = 1 - 1/2 = 1/2.',
+        'P(X = 2) = C(3, 2) · (1/2)² · (1/2)¹.',
+        'P(X = 2) = 3 · (1/4) · (1/2) = 3/8.'
+      ]
+    },
+    practice: {
+      question: 'Dalam 10 kali percobaan Bernoulli dengan peluang sukses p = 0,4, nilai harapan (rata-rata) suksesnya adalah...',
+      options: ['2', '4', '6', '2,4'],
+      correctIndex: 1,
+      explanation: 'Nilai harapan (mean) distribusi binomial adalah μ = n × p = 10 × 0,4 = 4.'
+    }
+  },
+  {
+    id: 'k12-transformasi',
+    grade: 12,
+    title: 'Transformasi Geometri',
+    category: 'Geometri Analitik',
+    duration: '30 mnt',
+    xp: 70,
+    summary: 'Translasi (pergeseran), refleksi (pencerminan), rotasi (perputaran), dan dilatasi (perkalian skala) pada bidang Kartesius.',
+    concept: 'Transformasi geometri mengubah posisi, orientasi, atau ukuran suatu titik/kurva pada bidang koordinat berdasarkan aturan atau matriks transformasi tertentu.',
+    formulas: [
+      { label: 'Translasi oleh T(a, b)', formula: 'P(x, y)  →  P′(x + a, y + b)' },
+      { label: 'Refleksi terhadap Sumbu-X', formula: 'P(x, y)  →  P′(x, -y)' },
+      { label: 'Dilatasi Pusat O(0,0) faktor k', formula: 'P(x, y)  →  P′(k·x, k·y)' }
+    ],
+    example: {
+      question: 'Tentukan bayangan titik A(3, -2) jika ditranslasikan oleh T(-4, 5)!',
+      steps: [
+        'Gunakan rumus translasi: x′ = x + a dan y′ = y + b.',
+        'x′ = 3 + (-4) = -1.',
+        'y′ = -2 + 5 = 3.',
+        'Jadi, bayangannya adalah A′(-1, 3).'
+      ]
+    },
+    practice: {
+      question: 'Bayangan titik P(4, -5) jika dicerminkan terhadap garis y = x adalah...',
+      options: ['(-4, 5)', '(-5, 4)', '(5, -4)', '(-4, -5)'],
+      correctIndex: 1,
+      explanation: 'Pencerminan titik (x, y) terhadap garis y = x menghasilkan bayangan (y, x). Maka (4, -5) menjadi (-5, 4).'
+    }
+  },
+  {
+    id: 'k12-aplikasi-kalkulus',
+    grade: 12,
+    title: 'Aplikasi Turunan dan Integral',
+    category: 'Kalkulus Terapan',
+    duration: '35 mnt',
+    xp: 85,
+    summary: 'Menentukan nilai stasioner/ekstrem fungsi, masalah optimasi nyata, dan luas daerah yang dibatasi kurva.',
+    concept: 'Turunan digunakan untuk mencari titik maksimum dan minimum fungsi pada saat f′(x) = 0. Sementara itu, integral tentu digunakan untuk menghitung luas daerah di bawah kurva maupun di antara dua kurva.',
+    formulas: [
+      { label: 'Syarat Stasioner (Maks/Min)', formula: 'f′(x) = 0' },
+      { label: 'Luas Daerah di Bawah Kurva', formula: 'L = ∫ₐᵇ f(x) dx' },
+      { label: 'Luas Antara Dua Kurva', formula: 'L = ∫ₐᵇ [f(x) - g(x)] dx' }
+    ],
+    example: {
+      question: 'Tentukan nilai maksimum dari fungsi f(x) = -x² + 8x - 7!',
+      steps: [
+        'Cari titik stasioner dengan f′(x) = 0.',
+        'f′(x) = -2x + 8 = 0  ⇒  2x = 8  ⇒  x = 4.',
+        'Substitusi x = 4 ke f(x): f(4) = -(4)² + 8(4) - 7 = -16 + 32 - 7 = 9.',
+        'Nilai maksimum fungsi tersebut adalah 9.'
+      ]
+    },
+    practice: {
+      question: 'Luas daerah yang dibatasi oleh kurva y = 3x², sumbu-X, garis x = 0, dan x = 2 adalah...',
+      options: ['6 satuan luas', '8 satuan luas', '12 satuan luas', '4 satuan luas'],
+      correctIndex: 1,
+      explanation: 'L = ∫₀² 3x² dx = [x³]₀² = 2³ - 0³ = 8 satuan luas.'
+    }
+  }
+];
+
+// ============================================================================
+// BANK SOAL KUIS INTERAKTIF (KELAS 10, 11, 12 & TINGKAT KESULITAN)
+// ============================================================================
+const QUIZ_BANK = [
+  // Kelas 10
+  { id: 'q1', grade: 10, difficulty: 'Mudah', topic: 'Fungsi Kuadrat', question: 'Koordinat titik potong grafik f(x) = x² - 5x + 6 dengan sumbu-Y adalah...', options: ['(0, 6)', '(6, 0)', '(0, -6)', '(2, 0)'], correct: 0, explanation: 'Titik potong sumbu-Y terjadi saat x = 0. f(0) = 0² - 5(0) + 6 = 6, sehingga titiknya (0, 6).' },
+  { id: 'q2', grade: 10, difficulty: 'Mudah', topic: 'Eksponen', question: 'Hasil dari (2³)² × 2⁻⁴ adalah...', options: ['2', '4', '8', '16'], correct: 1, explanation: '(2³)² × 2⁻⁴ = 2⁶ × 2⁻⁴ = 2⁶⁻⁴ = 2² = 4.' },
+  { id: 'q3', grade: 10, difficulty: 'Sedang', topic: 'Trigonometri Dasar', question: 'Jika cos α = 12/13 dan α di kuadran I, nilai tan α adalah...', options: ['5/13', '5/12', '12/5', '13/5'], correct: 1, explanation: 'Sa = 12, Mi = 13, maka De = √(13² - 12²) = 5. Jadi tan α = De/Sa = 5/12.' },
+  { id: 'q4', grade: 10, difficulty: 'Sedang', topic: 'Barisan & Deret', question: 'Suku ke-3 dan ke-7 barisan aritmetika berturut-turut adalah 11 dan 27. Suku ke-10 barisan tersebut adalah...', options: ['35', '39', '43', '31'], correct: 1, explanation: 'U₇ - U₃ = 4b ⇒ 27 - 11 = 16 ⇒ b = 4. a = 11 - 2(4) = 3. Maka U₁₀ = 3 + 9(4) = 39.' },
+  { id: 'q5', grade: 10, difficulty: 'Sulit', topic: 'Logaritma', question: 'Jika ²log 3 = a dan ³log 5 = b, maka nilai dari ²log 15 adalah...', options: ['a + b', 'a · b', 'a(1 + b)', 'b(1 + a)'], correct: 2, explanation: '²log 15 = ²log(3 × 5) = ²log 3 + ²log 5 = ²log 3 + (²log 3 · ³log 5) = a + ab = a(1 + b).' },
+
+  // Kelas 11
+  { id: 'q6', grade: 11, difficulty: 'Mudah', topic: 'Turunan Fungsi', question: 'Turunan pertama dari fungsi f(x) = 5x⁴ - 3x² + 8 adalah...', options: ['20x³ - 6x', '20x³ - 6x + 8', '5x³ - 3x', '20x⁴ - 6x²'], correct: 0, explanation: 'Dengan aturan pangkat: 5(4)x³ - 3(2)x¹ + 0 = 20x³ - 6x.' },
+  { id: 'q7', grade: 11, difficulty: 'Mudah', topic: 'Matriks', question: 'Diketahui A = [2  -1; 4  3] dan B = [1  5; -2  0]. Matriks A + B adalah...', options: ['[3  4; 2  3]', '[1  -6; 6  3]', '[3  6; 2  3]', '[2  -5; -8  0]'], correct: 0, explanation: 'Jumlahkan elemen seletak: [2+1  -1+5; 4+(-2)  3+0] = [3  4; 2  3].' },
+  { id: 'q8', grade: 11, difficulty: 'Sedang', topic: 'Limit Fungsi', question: 'Nilai dari lim (x→∞) (6x² - 4x + 1) / (2x² + 5x - 3) adalah...', options: ['0', '2', '3', '∞'], correct: 2, explanation: 'Karena pangkat tertinggi pembilang dan penyebut sama (x²), hasilnya adalah rasio koefisien utamanya: 6 / 2 = 3.' },
+  { id: 'q9', grade: 11, difficulty: 'Sedang', topic: 'Statistika', question: 'Simpangan rata-rata dari data 4, 5, 6, 7, 8 adalah...', options: ['1,0', '1,2', '1,5', '2,0'], correct: 1, explanation: 'Mean = 6. SR = (|4-6| + |5-6| + |6-6| + |7-6| + |8-6|) / 5 = (2+1+0+1+2)/5 = 6/5 = 1,2.' },
+  { id: 'q10', grade: 11, difficulty: 'Sulit', topic: 'Turunan & Garis Singgung', question: 'Gradien garis singgung kurva y = x³ - 3x + 2 di titik yang berabsis x = 2 adalah...', options: ['6', '9', '12', '4'], correct: 1, explanation: 'Gradien m = y′(2). Turunan y′ = 3x² - 3. Untuk x = 2, m = 3(2)² - 3 = 12 - 3 = 9.' },
+
+  // Kelas 12
+  { id: 'q11', grade: 12, difficulty: 'Mudah', topic: 'Integral', question: 'Hasil dari ∫ (4x³ + 6x) dx adalah...', options: ['x⁴ + 3x² + C', '12x² + 6 + C', '4x⁴ + 6x² + C', 'x⁴ + 6x² + C'], correct: 0, explanation: '∫ 4x³ dx = (4/4)x⁴ = x⁴, dan ∫ 6x dx = (6/2)x² = 3x². Tambahkan + C.' },
+  { id: 'q12', grade: 12, difficulty: 'Mudah', topic: 'Transformasi Geometri', question: 'Titik B(-2, 7) didilatasikan terhadap pusat O(0,0) dengan faktor skala k = 3. Bayangannya adalah...', options: ['(-6, 21)', '(1, 10)', '(6, -21)', '(-2/3, 7/3)'], correct: 0, explanation: 'Dilatasi pusat O dengan skala k mengalikan tiap koordinat dengan k: (-2×3, 7×3) = (-6, 21).' },
+  { id: 'q13', grade: 12, difficulty: 'Sedang', topic: 'Peluang', question: 'Dalam sebuah kotak terdapat 5 bola merah dan 3 bola biru. Jika diambil 2 bola sekaligus, peluang terambil keduanya merah adalah...', options: ['5/14', '5/28', '10/28', '15/56'], correct: 0, explanation: 'n(S) = C(8,2) = 28. n(A) = C(5,2) = 10. Peluang = 10/28 = 5/14.' },
+  { id: 'q14', grade: 12, difficulty: 'Sedang', topic: 'Dimensi Tiga', question: 'Kubus ABCD.EFGH memiliki panjang rusuk 10 cm. Jarak titik B ke diagonal ruang AG adalah...', options: ['5√2 cm', '(10/3)√6 cm', '5√3 cm', '5√6 cm'], correct: 1, explanation: 'Pada segitiga siku-siku ABG (siku-siku di B): AB = 10, BG = 10√2, AG = 10√3. Jarak B ke AG = (AB × BG)/AG = (10 × 10√2)/(10√3) = (10/3)√6 cm.' },
+  { id: 'q15', grade: 12, difficulty: 'Sulit', topic: 'Aplikasi Integral', question: 'Luas daerah yang dibatasi kurva y = 4 - x² dan sumbu-X adalah...', options: ['16/3 satuan luas', '32/3 satuan luas', '8 satuan luas', '16 satuan luas'], correct: 1, explanation: 'Batas potong sumbu-X: 4 - x² = 0 ⇒ x = -2 dan x = 2. L = ∫₋₂² (4 - x²) dx = [4x - (1/3)x³]₋₂² = (8 - 8/3) - (-8 + 8/3) = 16 - 16/3 = 32/3.' }
+];
+
+// ============================================================================
+// DATA BADGE & LEADERBOARD GAMIFIKASI
+// ============================================================================
+const BADGES_CONFIG = [
+  { id: 'first-step', title: 'Langkah Pertama', desc: 'Menyelesaikan 1 materi pembelajaran pertama', icon: '🚀', color: 'from-blue-500 to-indigo-600' },
+  { id: 'quiz-starter', title: 'Penantang Kuis', desc: 'Menyelesaikan minimal 1 sesi kuis latihan', icon: '⚡', color: 'from-violet-500 to-purple-600' },
+  { id: 'perfect-score', title: 'Skor Sempurna', desc: 'Meraih nilai 100 pada kuis latihan', icon: '🏆', color: 'from-amber-400 to-orange-500' },
+  { id: 'math-explorer', title: 'Penjelajah Materi', desc: 'Menyelesaikan minimal 5 materi SMA', icon: '📚', color: 'from-emerald-400 to-teal-600' },
+  { id: 'xp-master', title: 'Bintang MathSmart', desc: 'Mengumpulkan total 500 XP belajar', icon: '👑', color: 'from-indigo-500 to-purple-600' }
+];
+
+const INITIAL_LEADERBOARD = [
+  { id: 'u1', name: 'Nadia Putri', grade: 12, xp: 1450, avatar: '👩‍🎓' },
+  { id: 'u2', name: 'Rizky Pratama', grade: 11, xp: 1220, avatar: '🧑‍💻' },
+  { id: 'u3', name: 'Aulia Rahman', grade: 12, xp: 980, avatar: '👨‍🔬' },
+  { id: 'u4', name: 'Salsabila Azahra', grade: 10, xp: 760, avatar: '👩‍🏫' },
+  { id: 'u5', name: 'Dimas Saputra', grade: 11, xp: 540, avatar: '🧑‍🚀' }
+];
+
+const AVATAR_OPTIONS = ['🧑‍🎓', '👩‍🎓', '👨‍🔬', '👩‍🔬', '🧑‍💻', '👩‍💻', '🦉', '🚀'];
+
+// ============================================================================
+// HELPER ENGINE AI TUTOR MATEMATIKA SMA (CERDAS & INTERAKTIF)
+// ============================================================================
+function generateMathAIResponse(prompt, mode, userGrade) {
+  const q = prompt.toLowerCase();
+
+  // Deteksi persamaan kuadrat otomatis seperti x^2 - 5x + 6 = 0
+  const quadMatch = q.match(/([+-]?\d*)x\^2\s*([+-]\s*\d*)x\s*([+-]\s*\d+)/);
+  if (quadMatch) {
+    const aStr = quadMatch[1];
+    const a = aStr === '' || aStr === '+' ? 1 : aStr === '-' ? -1 : parseFloat(aStr);
+    const b = parseFloat(quadMatch[2].replace(/\s+/g, ''));
+    const c = parseFloat(quadMatch[3].replace(/\s+/g, ''));
+    const D = b * b - 4 * a * c;
+
+    if (D >= 0) {
+      const x1 = ((-b + Math.sqrt(D)) / (2 * a)).toFixed(2).replace(/\.00$/, '');
+      const x2 = ((-b - Math.sqrt(D)) / (2 * a)).toFixed(2).replace(/\.00$/, '');
+      return {
+        title: `Penyelesaian Persamaan Kuadrat (${a}x² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c} = 0)`,
+        text:
+          mode === 'simple'
+            ? `Untuk mencari nilai x, kita cek dulu nilai Diskriminan (D) = ${D}. Karena D ≥ 0, persamaan ini punya akar nyata yaitu x₁ = ${x1} dan x₂ = ${x2}.`
+            : `Mari kita selesaikan secara bertahap menggunakan Rumus ABC:\n1. Identifikasi koefisien: a = ${a}, b = ${b}, c = ${c}.\n2. Hitung Diskriminan: D = b² - 4ac = (${b})² - 4(${a})(${c}) = ${D}.\n3. Gunakan rumus x = (-b ± √D) / 2a:\n   • x₁ = (${-b} + √${D}) / ${2 * a} = ${x1}\n   • x₂ = (${-b} - √${D}) / ${2 * a} = ${x2}`,
+        formula: 'x₁,₂ = (-b ± √(b² - 4ac)) / 2a',
+        followUp: 'Coba latihan serupa: Tentukan akar-akar dari x² - 7x + 12 = 0!'
+      };
+    } else {
+      return {
+        title: 'Analisis Persamaan Kuadrat (Akar Imajiner)',
+        text: `Dari koefisien a = ${a}, b = ${b}, c = ${c}, diperoleh Diskriminan D = b² - 4ac = ${D}. Karena D < 0, persamaan kuadrat ini tidak memiliki akar bilangan real (akarnya imajiner).`,
+        formula: 'D = b² - 4ac < 0  ⇒  Akar Imajiner',
+        followUp: 'Ingin mencoba contoh persamaan kuadrat yang memiliki dua akar real berbeda?'
+      };
+    }
+  }
+
+  if (q.includes('turunan') || q.includes('diferensial')) {
+    return {
+      title: 'Konsep & Langkah Turunan Fungsi (Diferensial)',
+      text:
+        mode === 'simple'
+          ? 'Bayangkan turunan seperti "mesin penurun pangkat". Pangkat x dikalikan ke depan koefisien, lalu pangkat lamanya dikurangi 1. Konstanta (angka tanpa x) kalau diturunkan selalu jadi 0!'
+          : 'Langkah menyelesaikan turunan fungsi aljabar f(x) = a·xⁿ:\n1. Kalikan pangkat (n) dengan koefisien (a).\n2. Kurangi pangkat variabel x dengan 1 menjadi (n - 1).\n3. Contoh: Jika f(x) = 4x³ + 5x - 7, maka:\n   • 4x³ → 4·3x² = 12x²\n   • 5x → 5·1x⁰ = 5\n   • -7 → 0\n   Hasil akhir: f′(x) = 12x² + 5.',
+      formula: 'f(x) = a·xⁿ   ⇒   f′(x) = a·n·xⁿ⁻¹',
+      followUp: 'Contoh soal serupa: Coba tentukan turunan pertama dari f(x) = 3x⁴ - 2x² + 9x!'
+    };
+  }
+
+  if (q.includes('integral')) {
+    return {
+      title: 'Memahami Integral (Anti-Turunan)',
+      text:
+        mode === 'simple'
+          ? 'Integral adalah kebalikan dari turunan! Kalau turunan mengurangi pangkat, integral justru MENAIKKAN pangkat x sebesar 1, lalu membagi koefisiennya dengan pangkat yang baru tersebut. Jangan lupa tambahkan "+ C" untuk integral tak tentu.'
+          : 'Langkah mengerjakan Integral Tak Tentu ∫ a·xⁿ dx:\n1. Tambahkan pangkat variabel x dengan 1 (menjadi n + 1).\n2. Bagi koefisien a dengan pangkat baru (n + 1).\n3. Tambahkan konstanta integrasi (+ C).\n4. Contoh: ∫ (6x² + 4x) dx = (6/3)x³ + (4/2)x² + C = 2x³ + 2x² + C.',
+      formula: '∫ a·xⁿ dx = [a / (n + 1)] · xⁿ⁺¹ + C',
+      followUp: 'Latihan serupa: Hitunglah hasil dari ∫ (9x² - 2x + 5) dx!'
+    };
+  }
+
+  if (q.includes('trigonometri') || q.includes('sin') || q.includes('cos') || q.includes('tan')) {
+    return {
+      title: 'Panduan Cepat Trigonometri SMA',
+      text:
+        mode === 'simple'
+          ? 'Gunakan jembatan keledai "SinDeMi, CosSaMi, TanDeSa" pada segitiga siku-siku:\n• Sin = Depan / Miring\n• Cos = Samping / Miring\n• Tan = Depan / Samping\nUntuk kuadran, ingat: "Semua Sindikat Tangannya Cosong" (K.I Semua +, K.II Sin +, K.III Tan +, K.IV Cos +).'
+          : 'Langkah menentukan nilai trigonometri sudut di berbagai kuadran:\n1. Tentukan kuadran sudut untuk mengetahui tanda positif/negatifnya.\n2. Gunakan sudut berelasi dengan sumbu-X (180° ± α atau 360° - α) agar fungsi trigonometrinya tidak berubah.\n3. Contoh: sin 150° berada di Kuadran II (sin positif).\n   sin 150° = sin(180° - 30°) = +sin 30° = 1/2.',
+      formula: 'sin²θ + cos²θ = 1   |   tan θ = sin θ / cos θ',
+      followUp: 'Soal latihan: Berapakah nilai dari cos 120° + sin 30°?'
+    };
+  }
+
+  if (q.includes('limit')) {
+    return {
+      title: 'Strategi Menyelesaikan Limit Fungsi',
+      text:
+        mode === 'simple'
+          ? 'Aturan emas limit: Coba masukkan (substitusi) dulu angka x-nya! Kalau hasilnya angka biasa (misal 5 atau 0/4 = 0), selesai! Tapi kalau hasilnya 0/0, berarti fungsi harus difaktorkan dulu atau dikali sekawan.'
+          : 'Tahapan menyelesaikan lim (x→a) f(x):\n1. Substitusi langsung x = a ke dalam fungsi.\n2. Jika menghasilkan bentuk tentu, itulah jawabannya.\n3. Jika menghasilkan 0/0 (tak tentu):\n   • Bentuk polinomial: Faktorkan pembilang dan penyebut lalu coret faktor pembuat nol.\n   • Bentuk akar: Kalikan dengan bentuk sekawannya.\n4. Contoh: lim (x→2) (x² - 4)/(x - 2) = lim (x→2) (x - 2)(x + 2)/(x - 2) = 2 + 2 = 4.',
+      formula: 'lim (x→a) [f(x)/g(x)] → Faktorkan jika hasil substitusi = 0/0',
+      followUp: 'Coba kerjakan: Tentukan nilai lim (x→4) (x² - 16) / (x - 4)!'
+    };
+  }
+
+  if (q.includes('logaritma') || q.includes('log')) {
+    return {
+      title: 'Konsep & Sifat Utama Logaritma',
+      text:
+        mode === 'simple'
+          ? 'Logaritma itu sebenarnya bertanya: "Basisnya harus dipangkatin berapa biar jadi numerus?" Misalnya ²log 8 artinya: 2 pangkat berapa yang hasilnya 8? Jawabannya 3!'
+          : 'Sifat-sifat kunci logaritma untuk menyederhanakan soal:\n1. ᵃlog(b · c) = ᵃlog b + ᵃlog c (tambah jadi kali)\n2. ᵃlog(b / c) = ᵃlog b - ᵃlog c (kurang jadi bagi)\n3. ᵃlog(bⁿ) = n · ᵃlog b (pangkat turun ke depan)\n4. Contoh: ³log 18 + ³log 3 - ³log 2 = ³log((18 × 3)/2) = ³log 27 = 3.',
+      formula: 'ᵃlog b = c  ⇔  aᶜ = b',
+      followUp: 'Tantangan kecil: Berapakah nilai dari ⁵log 50 - ⁵log 2?'
+    };
+  }
+
+  if (q.includes('matriks')) {
+    return {
+      title: 'Determinan dan Invers Matriks 2×2',
+      text:
+        mode === 'simple'
+          ? 'Untuk mencari determinan matriks 2×2, cukup kalikan diagonal utama (kiri atas ke kanan bawah) lalu dikurangi perkalian diagonal samping (kanan atas ke kiri bawah).'
+          : 'Langkah mencari Invers Matriks A = [a  b ; c  d]:\n1. Hitung determinan: det(A) = ad - bc. (Jika det(A) = 0, matriks tidak punya invers).\n2. Tukar posisi elemen a dan d, lalu kalikan elemen b dan c dengan -1 (matriks adjoin).\n3. Kalikan adjoin dengan 1/det(A).',
+      formula: 'A⁻¹ = [1 / (ad - bc)] · [ d  -b ; -c  a ]',
+      followUp: 'Coba hitung determinan dari matriks P = [ 5  2 ; 3  4 ]!'
+    };
+  }
+
+  return {
+    title: `Bantuan Belajar Matematika Kelas ${userGrade}`,
+    text:
+      mode === 'challenge'
+        ? `Siap! Mari kita latih pemahamanmu untuk materi Kelas ${userGrade}. Coba pecahkan soal tantangan berikut: Jika f(x) = 2x² - 4x + 5, tentukan nilai minimum fungsi tersebut! Ketik topik spesifik seperti "turunan", "integral", "trigonometri", "limit", atau tuliskan persamaan kuadrat seperti "x^2 - 5x + 6 = 0" agar saya bantu langkah demi langkah.`
+        : `Halo! Saya MathSmart AI Tutor. Saya siap membantumu memahami konsep matematika SMA (Kelas 10, 11, dan 12) dengan bahasa yang mudah dipahami. Kamu bisa menanyakan topik seperti:\n• "Jelaskan konsep turunan fungsi"\n• "Cara mengerjakan limit 0/0"\n• "Selesaikan x^2 - 5x + 6 = 0"\n• "Rumus cepat trigonometri sudut istimewa"`,
+    formula: 'Matematika itu mudah jika dipahami konsepnya langkah demi langkah!',
+    followUp: 'Topik matematika apa yang sedang kamu pelajari di sekolah hari ini?'
+  };
+}
+
+// ============================================================================
+// KOMPONEN UTAMA APLIKASI: MATHSMART
+// ============================================================================
+export default function App() {
+  // ---------------- STATE UTAMA & PERSISTENCE (LOCALSTORAGE) ----------------
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mathsmart_profile');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            name: 'Raka Pratama',
+            grade: 11,
+            avatar: '🧑‍🎓',
+            dailyTarget: 3
+          };
+    } catch {
+      return { name: 'Raka Pratama', grade: 11, avatar: '🧑‍🎓', dailyTarget: 3 };
+    }
+  });
+
+  const [progress, setProgress] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mathsmart_progress');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            completedMaterials: ['k10-persamaan', 'k10-kuadrat', 'k11-limit'],
+            xp: 340,
+            streak: 4,
+            todayCompleted: 2,
+            quizHistory: [
+              { id: 'h1', date: '12 Nov 2026', grade: 11, difficulty: 'Mudah', score: 80, total: 5, correct: 4, xpEarned: 80 },
+              { id: 'h2', date: '13 Nov 2026', grade: 10, difficulty: 'Sedang', score: 100, total: 5, correct: 5, xpEarned: 120 }
+            ]
+          };
+    } catch {
+      return { completedMaterials: ['k10-persamaan'], xp: 150, streak: 1, todayCompleted: 1, quizHistory: [] };
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mathsmart_profile', JSON.stringify(userProfile));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [userProfile]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('mathsmart_progress', JSON.stringify(progress));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [progress]);
+
+  // ---------------- STATISTIK TURUNAN & GAMIFIKASI ----------------
+  const level = Math.floor(progress.xp / 200) + 1;
+  const xpInCurrentLevel = progress.xp % 200;
+  const xpProgressPercent = Math.round((xpInCurrentLevel / 200) * 100);
+
+  const averageQuizScore = useMemo(() => {
+    if (progress.quizHistory.length === 0) return 0;
+    const sum = progress.quizHistory.reduce((acc, item) => acc + item.score, 0);
+    return Math.round(sum / progress.quizHistory.length);
+  }, [progress.quizHistory]);
+
+  const unlockedBadges = useMemo(() => {
+    const unlocked = [];
+    if (progress.completedMaterials.length >= 1) unlocked.push('first-step');
+    if (progress.quizHistory.length >= 1) unlocked.push('quiz-starter');
+    if (progress.quizHistory.some((q) => q.score === 100)) unlocked.push('perfect-score');
+    if (progress.completedMaterials.length >= 5) unlocked.push('math-explorer');
+    if (progress.xp >= 500) unlocked.push('xp-master');
+    return unlocked;
+  }, [progress]);
+
+  const recommendedMaterial = useMemo(() => {
+    const gradeMaterials = MATERIALS_DATA.filter((m) => m.grade === Number(userProfile.grade));
+    const uncompleted = gradeMaterials.find((m) => !progress.completedMaterials.includes(m.id));
+    return uncompleted || MATERIALS_DATA.find((m) => !progress.completedMaterials.includes(m.id)) || MATERIALS_DATA[0];
+  }, [userProfile.grade, progress.completedMaterials]);
+
+  const leaderboardList = useMemo(() => {
+    const combined = [
+      ...INITIAL_LEADERBOARD,
+      {
+        id: 'current-user',
+        name: `${userProfile.name} (Kamu)`,
+        grade: Number(userProfile.grade),
+        xp: progress.xp,
+        avatar: userProfile.avatar,
+        isCurrentUser: true
+      }
+    ];
+    return combined.sort((a, b) => b.xp - a.xp);
+  }, [userProfile, progress.xp]);
+
+  // ---------------- STATE HALAMAN MATERI ----------------
+  const [selectedGradeFilter, setSelectedGradeFilter] = useState(userProfile.grade || 11);
+  const [activeMaterial, setActiveMaterial] = useState(null);
+  const [practiceAnswer, setPracticeAnswer] = useState(null);
+  const [practiceSubmitted, setPracticeSubmitted] = useState(false);
+
+  const handleOpenMaterial = (material) => {
+    setActiveMaterial(material);
+    setPracticeAnswer(null);
+    setPracticeSubmitted(false);
+    setActiveTab('materials');
+  };
+
+  const handleCompleteMaterial = (material) => {
+    if (!progress.completedMaterials.includes(material.id)) {
+      setProgress((prev) => ({
+        ...prev,
+        completedMaterials: [...prev.completedMaterials, material.id],
+        xp: prev.xp + material.xp,
+        todayCompleted: prev.todayCompleted + 1
+      }));
+    }
+  };
+
+  // ---------------- STATE HALAMAN KALKULATOR MULTI-MODE ----------------
+  const [calcMode, setCalcMode] = useState('scientific');
+  // Mode 1: Ilmiah
+  const [sciInput, setSciInput] = useState('2 * (15 + 5) ^ 2');
+  const [sciResult, setSciResult] = useState('800');
+  // Mode 2: Kuadrat
+  const [quadA, setQuadA] = useState('1');
+  const [quadB, setQuadB] = useState('-5');
+  const [quadC, setQuadC] = useState('6');
+  // Mode 3: Trigonometri
+  const [trigAngle, setTrigAngle] = useState('30');
+  const [trigUnit, setTrigUnit] = useState('deg');
+  // Mode 4: Logaritma
+  const [logBase, setLogBase] = useState('2');
+  const [logNum, setLogNum] = useState('32');
+  // Mode 5: Kalkulus Sederhana (Polinomial)
+  const [calcPolyCoeffA, setCalcPolyCoeffA] = useState('3');
+  const [calcPolyExpA, setCalcPolyExpA] = useState('2');
+  const [calcPolyCoeffB, setCalcPolyCoeffB] = useState('4');
+  const [calcPolyConstC, setCalcPolyConstC] = useState('-5');
+
+  const evaluateScientific = (expr) => {
+    try {
+      const sanitized = expr
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/\^/g, '**')
+        .replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)')
+        .replace(/π/g, 'Math.PI');
+      if (/[^0-9+\-*/().\sMathsqrtPI]/.test(sanitized)) {
+        setSciResult('Format tidak valid');
+        return;
+      }
+      // eslint-disable-next-line no-new-func
+      const val = Function(`"use strict"; return (${sanitized})`)();
+      if (Number.isFinite(val)) {
+        setSciResult(Number(val.toFixed(6)).toString());
+      } else {
+        setSciResult('Tak terdefinisi');
+      }
+    } catch {
+      setSciResult('Error sintaks');
+    }
+  };
+
+  const quadraticAnalysis = useMemo(() => {
+    const a = parseFloat(quadA);
+    const b = parseFloat(quadB);
+    const c = parseFloat(quadC);
+    if (isNaN(a) || isNaN(b) || isNaN(c) || a === 0) {
+      return { valid: false, message: 'Masukkan koefisien valid dengan a ≠ 0.' };
+    }
+    const D = b * b - 4 * a * c;
+    const xp = -b / (2 * a);
+    const yp = -D / (4 * a);
+    if (D > 0) {
+      const x1 = (-b + Math.sqrt(D)) / (2 * a);
+      const x2 = (-b - Math.sqrt(D)) / (2 * a);
+      return {
+        valid: true,
+        D,
+        type: 'Dua akar real berbeda (D > 0)',
+        x1: Number(x1.toFixed(4)),
+        x2: Number(x2.toFixed(4)),
+        vertex: `(${Number(xp.toFixed(2))}, ${Number(yp.toFixed(2))})`
+      };
+    } else if (D === 0) {
+      const x1 = -b / (2 * a);
+      return {
+        valid: true,
+        D: 0,
+        type: 'Satu akar real kembar (D = 0)',
+        x1: Number(x1.toFixed(4)),
+        x2: Number(x1.toFixed(4)),
+        vertex: `(${Number(xp.toFixed(2))}, ${Number(yp.toFixed(2))})`
+      };
+    } else {
+      return {
+        valid: true,
+        D,
+        type: 'Tidak memiliki akar real / Imajiner (D < 0)',
+        x1: 'Imajiner',
+        x2: 'Imajiner',
+        vertex: `(${Number(xp.toFixed(2))}, ${Number(yp.toFixed(2))})`
+      };
+    }
+  }, [quadA, quadB, quadC]);
+
+  const trigValues = useMemo(() => {
+    const val = parseFloat(trigAngle);
+    if (isNaN(val)) return { sin: '-', cos: '-', tan: '-' };
+    const rad = trigUnit === 'deg' ? (val * Math.PI) / 180 : val;
+    const sinV = Math.sin(rad);
+    const cosV = Math.cos(rad);
+    const tanV = Math.abs(cosV) < 1e-10 ? 'Tak Hingga (∞)' : Number(Math.tan(rad).toFixed(4)).toString();
+    return {
+      sin: Number(sinV.toFixed(4)).toString(),
+      cos: Number(cosV.toFixed(4)).toString(),
+      tan: tanV
+    };
+  }, [trigAngle, trigUnit]);
+
+  const logResult = useMemo(() => {
+    const a = parseFloat(logBase);
+    const b = parseFloat(logNum);
+    if (isNaN(a) || isNaN(b) || a <= 0 || a === 1 || b <= 0) {
+      return { valid: false, msg: 'Syarat logaritma: basis a > 0, a ≠ 1, dan numerus b > 0.' };
+    }
+    const res = Math.log(b) / Math.log(a);
+    const lnB = Math.log(b);
+    return {
+      valid: true,
+      value: Number(res.toFixed(5)),
+      lnValue: Number(lnB.toFixed(5))
+    };
+  }, [logBase, logNum]);
+
+  const calculusResult = useMemo(() => {
+    const a = parseFloat(calcPolyCoeffA) || 0;
+    const n = parseInt(calcPolyExpA, 10) || 0;
+    const b = parseFloat(calcPolyCoeffB) || 0;
+    const c = parseFloat(calcPolyConstC) || 0;
+
+    // Turunan: a*n*x^(n-1) + b
+    const derivTerm1 = n === 0 ? '' : n === 1 ? `${a}` : `${a * n}x${n - 1 === 1 ? '' : `^${n - 1}`}`;
+    const derivTerm2 = b === 0 ? '' : `${b > 0 && derivTerm1 ? ' + ' : b < 0 ? ' - ' : ''}${Math.abs(b)}`;
+    const derivative = (derivTerm1 + derivTerm2).trim() || '0';
+
+    // Integral: (a/(n+1))x^(n+1) + (b/2)x^2 + cx + C
+    const newExp = n + 1;
+    const intCoeff1 = a / newExp;
+    const formattedInt1 =
+      a === 0
+        ? ''
+        : `${Number.isInteger(intCoeff1) ? intCoeff1 : `(${a}/${newExp})`}x^${newExp}`;
+    const intCoeff2 = b / 2;
+    const formattedInt2 =
+      b === 0
+        ? ''
+        : `${b > 0 && formattedInt1 ? ' + ' : b < 0 ? ' - ' : ''}${
+            Number.isInteger(intCoeff2) ? Math.abs(intCoeff2) : `(${Math.abs(b)}/2)`
+          }x²`;
+    const formattedInt3 =
+      c === 0
+        ? ''
+        : `${c > 0 && (formattedInt1 || formattedInt2) ? ' + ' : c < 0 ? ' - ' : ''}${Math.abs(c)}x`;
+
+    const integral = `${formattedInt1}${formattedInt2}${formattedInt3} + C`.replace(/^\s*\+\s*/, '');
+
+    return { derivative, integral };
+  }, [calcPolyCoeffA, calcPolyExpA, calcPolyCoeffB, calcPolyConstC]);
+
+  // ---------------- STATE KUIS & LATIHAN SOAL ----------------
+  const [quizGrade, setQuizGrade] = useState('all');
+  const [quizDifficulty, setQuizDifficulty] = useState('all');
+  const [quizState, setQuizState] = useState('setup'); // 'setup' | 'running' | 'result'
+  const [activeQuestions, setActiveQuestions] = useState([]);
+  const [currentQIndex, setCurrentQIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [timeLeft, setTimeLeft] = useState(300);
+
+  useEffect(() => {
+    if (quizState !== 'running') return;
+    if (timeLeft <= 0) {
+      finishQuiz();
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizState, timeLeft]);
+
+  const startQuiz = () => {
+    let filtered = QUIZ_BANK;
+    if (quizGrade !== 'all') {
+      filtered = filtered.filter((q) => q.grade === Number(quizGrade));
+    }
+    if (quizDifficulty !== 'all') {
+      filtered = filtered.filter((q) => q.difficulty === quizDifficulty);
+    }
+    if (filtered.length === 0) filtered = QUIZ_BANK.slice(0, 5);
+    setActiveQuestions(filtered);
+    setCurrentQIndex(0);
+    setUserAnswers({});
+    setTimeLeft(filtered.length * 60); // 1 menit per soal
+    setQuizState('running');
+  };
+
+  const finishQuiz = () => {
+    let correctCount = 0;
+    activeQuestions.forEach((q, idx) => {
+      if (userAnswers[idx] === q.correct) correctCount++;
+    });
+    const score = Math.round((correctCount / activeQuestions.length) * 100);
+    const xpEarned = correctCount * 25 + (score === 100 ? 50 : 0);
+
+    const newRecord = {
+      id: `q-${Date.now()}`,
+      date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+      grade: quizGrade === 'all' ? 'Campuran' : Number(quizGrade),
+      difficulty: quizDifficulty === 'all' ? 'Semua' : quizDifficulty,
+      score,
+      total: activeQuestions.length,
+      correct: correctCount,
+      xpEarned
+    };
+
+    setProgress((prev) => ({
+      ...prev,
+      xp: prev.xp + xpEarned,
+      todayCompleted: prev.todayCompleted + 1,
+      quizHistory: [newRecord, ...prev.quizHistory]
+    }));
+
+    setQuizState('result');
+  };
+
+  // ---------------- STATE AI TUTOR ----------------
+  const [aiMode, setAiMode] = useState('step'); // 'simple' | 'step' | 'challenge'
+  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 'm1',
+      sender: 'ai',
+      title: 'Halo! Saya MathSmart AI Tutor 👋',
+      text: 'Ada rumus atau soal matematika SMA yang bikin bingung? Tanyakan saja di sini! Saya bisa menjelaskan dengan bahasa sederhana, langkah demi langkah, atau memberimu soal latihan serupa.',
+      formula: 'Siap membantu materi Kelas 10, 11, dan 12!',
+      followUp: 'Coba klik salah satu pertanyaan cepat di bawah atau ketik soalmu sendiri.'
+    }
+  ]);
+
+  const handleSendChat = (customPrompt) => {
+    const textToSend = (customPrompt ?? chatInput).trim();
+    if (!textToSend) return;
+
+    const userMsg = { id: `u-${Date.now()}`, sender: 'user', text: textToSend };
+    const aiReplyData = generateMathAIResponse(textToSend, aiMode, userProfile.grade);
+    const aiMsg = {
+      id: `a-${Date.now() + 1}`,
+      sender: 'ai',
+      ...aiReplyData
+    };
+
+    setChatMessages((prev) => [...prev, userMsg, aiMsg]);
+    if (!customPrompt) setChatInput('');
+  };
+
+  // ---------------- STATE EDIT PROFIL ----------------
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [tempProfile, setTempProfile] = useState(userProfile);
+
+  const saveProfileChanges = () => {
+    if (!tempProfile.name.trim()) return;
+    setUserProfile(tempProfile);
+    setSelectedGradeFilter(Number(tempProfile.grade));
+    setIsEditingProfile(false);
+  };
+
+  // ---------------- NAVIGASI MENU ----------------
+  const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'materials', label: 'Materi Belajar', icon: BookOpen },
+    { id: 'calculator', label: 'Kalkulator', icon: Calculator },
+    { id: 'quiz', label: 'Kuis & Latihan', icon: Target },
+    { id: 'aitutor', label: 'AI Tutor', icon: BrainCircuit },
+    { id: 'gamification', label: 'Peringkat & Badge', icon: Trophy },
+    { id: 'profile', label: 'Profil Siswa', icon: User }
+  ];
+
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
+  // ============================================================================
+  // RENDER UI UTAMA
+  // ============================================================================
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col lg:flex-row font-sans selection:bg-indigo-100 selection:text-indigo-800">
+      {/* ---------------- SIDEBAR DESKTOP ---------------- */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-72 bg-white border-r border-slate-200/80 sticky top-0 h-screen z-30 shadow-sm">
+        <div className="p-6 flex items-center gap-3 border-b border-slate-100">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+            <Sigma className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
+              MathSmart
+            </h1>
+            <p className="text-xs text-slate-500 font-medium">Platform Matematika SMA</p>
+          </div>
+        </div>
+
+        {/* Kartu Mini Profil & Level di Sidebar */}
+        <div className="p-4 mx-4 mt-4 rounded-2xl bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 border border-indigo-100/80">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center text-2xl border border-indigo-100">
+              {userProfile.avatar}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-bold text-sm text-slate-800 truncate">{userProfile.name}</p>
+              <p className="text-xs text-indigo-600 font-semibold">Kelas {userProfile.grade} SMA • Level {level}</p>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="flex justify-between text-[11px] font-semibold text-slate-600 mb-1">
+              <span>{progress.xp} XP</span>
+              <span>Level {level + 1} ({xpInCurrentLevel}/200)</span>
+            </div>
+            <div className="w-full h-2 bg-white rounded-full overflow-hidden border border-indigo-100">
+              <div
+                className="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-500"
+                style={{ width: `${xpProgressPercent}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Menu Navigasi */}
+        <nav className="flex-1 px-4 py-5 space-y-1.5 overflow-y-auto">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  if (item.id !== 'materials') setActiveMaterial(null);
+                }}
+                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  isActive
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-indigo-200'
+                    : 'text-slate-600 hover:bg-indigo-50/70 hover:text-indigo-700'
+                }`}
+              >
+                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <span>{item.label}</span>
+                {item.id === 'aitutor' && (
+                  <span className={`ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
+                    AI
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 border-t border-slate-100 text-center">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200/60">
+            <Flame className="w-4 h-4 fill-amber-500 text-amber-500" />
+            <span>Streak Belajar: {progress.streak} Hari</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* ---------------- HEADER MOBILE & TABLET ---------------- */}
+      <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white">
+            <Sigma className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="font-extrabold text-lg bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">
+              MathSmart
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold border border-amber-200">
+            <Flame className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+            <span>{progress.streak}</span>
+          </div>
+          <div className="flex items-center gap-1 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full text-xs font-bold border border-indigo-200">
+            <Star className="w-3.5 h-3.5 fill-indigo-500 text-indigo-500" />
+            <span>{progress.xp} XP</span>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-indigo-600"
+            aria-label="Toggle Menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Dropdown Drawer Mobile */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-[61px] bg-slate-900/40 backdrop-blur-xs z-40" onClick={() => setMobileMenuOpen(false)}>
+          <div className="bg-white p-4 space-y-1.5 border-b border-slate-200 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    if (item.id !== 'materials') setActiveMaterial(null);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                      : 'text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ---------------- KONTEN UTAMA ---------------- */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        {/* ====================================================================
+            1. HALAMAN DASHBOARD
+           ==================================================================== */}
+        {activeTab === 'dashboard' && (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Hero Banner Sambutan */}
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white p-6 sm:p-8 shadow-lg shadow-indigo-200/60">
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="space-y-2 max-w-xl">
+                  <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-semibold">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Kelas {userProfile.grade} SMA • Semester Aktif</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                    Halo, {userProfile.name}! 👋
+                  </h2>
+                  <p className="text-blue-100 text-sm sm:text-base leading-relaxed">
+                    Siap menaklukkan rumus dan logika Matematika hari ini? Lanjutkan progres belajarmu dan raih level berikutnya!
+                  </p>
+                  <div className="pt-2 flex flex-wrap gap-3">
+                    <button
+                      onClick={() => handleOpenMaterial(recommendedMaterial)}
+                      className="inline-flex items-center gap-2 bg-white text-indigo-700 hover:bg-blue-50 font-bold px-5 py-2.5 rounded-xl text-sm shadow-md transition-all cursor-pointer"
+                    >
+                      <Play className="w-4 h-4 fill-indigo-700" />
+                      <span>Mulai Belajar Sekarang</span>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('aitutor')}
+                      className="inline-flex items-center gap-2 bg-indigo-500/40 hover:bg-indigo-500/60 text-white border border-white/25 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all cursor-pointer"
+                    >
+                      <BrainCircuit className="w-4 h-4" />
+                      <span>Tanya AI Tutor</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Widget Level & XP */}
+                <div className="bg-white/12 backdrop-blur-md border border-white/20 rounded-2xl p-5 min-w-[230px]">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-blue-100">Status Pelajar</span>
+                    <span className="bg-amber-400 text-slate-900 text-xs font-extrabold px-2.5 py-0.5 rounded-full">
+                      LVL {level}
+                    </span>
+                  </div>
+                  <div className="text-3xl font-extrabold">{progress.xp} <span className="text-base font-semibold text-blue-200">XP</span></div>
+                  <div className="mt-3">
+                    <div className="flex justify-between text-xs text-blue-100 mb-1">
+                      <span>Progres Level</span>
+                      <span>{xpProgressPercent}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-black/20 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-amber-300 to-yellow-400 rounded-full transition-all duration-500"
+                        style={{ width: `${xpProgressPercent}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Ornamen Geometris Halus */}
+              <div className="absolute -right-12 -bottom-12 w-56 h-56 rounded-full bg-purple-500/20 blur-2xl pointer-events-none" />
+              <div className="absolute right-32 -top-10 w-40 h-40 rounded-full bg-blue-400/20 blur-xl pointer-events-none" />
+            </div>
+
+            {/* 4 Kartu Statistik Utama */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Materi Selesai</span>
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-800">{progress.completedMaterials.length}</span>
+                  <span className="text-xs font-semibold text-slate-500">/ {MATERIALS_DATA.length} Topik</span>
+                </div>
+                <div className="mt-2 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-blue-600 rounded-full"
+                    style={{ width: `${Math.round((progress.completedMaterials.length / MATERIALS_DATA.length) * 100)}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-Rata Kuis</span>
+                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-800">{averageQuizScore}</span>
+                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                    {averageQuizScore >= 80 ? 'Sangat Baik' : 'Terus Tingkatkan'}
+                  </span>
+                </div>
+                <p className="mt-2 text-xs text-slate-500">Dari {progress.quizHistory.length} sesi kuis</p>
+              </div>
+
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Target Harian</span>
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <Target className="w-5 h-5" />
+                  </div>
+                </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-800">
+                    {Math.min(progress.todayCompleted, userProfile.dailyTarget)}/{userProfile.dailyTarget}
+                  </span>
+                  <span className="text-xs font-semibold text-slate-500">Aktivitas</span>
+                </div>
+                <div className="mt-2 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-indigo-600 rounded-full transition-all"
+                    style={{ width: `${Math.min(100, Math.round((progress.todayCompleted / userProfile.dailyTarget) * 100))}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Streak Harian</span>
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
+                    <Flame className="w-5 h-5 fill-amber-500" />
+                  </div>
+                </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold text-slate-800">{progress.streak} Hari</span>
+                  <span className="text-xs font-semibold text-amber-600">Aktif!</span>
+                </div>
+                <p className="mt-2 text-xs text-slate-500">{unlockedBadges.length} dari {BADGES_CONFIG.length} badge diraih</p>
+              </div>
+            </div>
+
+            {/* Rekomendasi Materi Berikutnya & Akses Cepat Fitur */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Rekomendasi Untukmu</span>
+                    <h3 className="text-lg font-extrabold text-slate-800">Materi Berikutnya</h3>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('materials')}
+                    className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 inline-flex items-center gap-1"
+                  >
+                    <span>Lihat Semua</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 via-indigo-50/40 to-purple-50/40 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                        Kelas {recommendedMaterial.grade}
+                      </span>
+                      <span className="text-xs font-medium text-slate-500">{recommendedMaterial.category}</span>
+                      <span className="text-xs font-semibold text-amber-600">+{recommendedMaterial.xp} XP</span>
+                    </div>
+                    <h4 className="text-xl font-bold text-slate-800">{recommendedMaterial.title}</h4>
+                    <p className="text-sm text-slate-600 line-clamp-2">{recommendedMaterial.summary}</p>
+                  </div>
+                  <button
+                    onClick={() => handleOpenMaterial(recommendedMaterial)}
+                    className="shrink-0 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-5 py-3 rounded-xl text-sm shadow-sm transition-all cursor-pointer"
+                  >
+                    <span>Pelajari</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Daftar Materi Kelas Pengguna */}
+                <div className="mt-5">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                    Kurikulum Kelas {userProfile.grade} SMA
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {MATERIALS_DATA.filter((m) => m.grade === Number(userProfile.grade)).map((mat) => {
+                      const done = progress.completedMaterials.includes(mat.id);
+                      return (
+                        <button
+                          key={mat.id}
+                          onClick={() => handleOpenMaterial(mat)}
+                          className="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/30 text-left transition-all"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            {done ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-slate-300 shrink-0" />
+                            )}
+                            <span className="text-sm font-semibold text-slate-700 truncate">{mat.title}</span>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Pintasan Fitur Interaktif */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs flex flex-col justify-between space-y-4">
+                <div>
+                  <h3 className="text-lg font-extrabold text-slate-800 mb-1">Alat Bantu Belajar</h3>
+                  <p className="text-xs text-slate-500 mb-4">Gunakan fitur interaktif untuk mempercepat pemahamanmu.</p>
+
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => setActiveTab('calculator')}
+                      className="w-full p-3.5 rounded-xl border border-slate-100 hover:border-blue-200 bg-blue-50/40 hover:bg-blue-50 flex items-center gap-3.5 text-left transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
+                        <Calculator className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-800">Kalkulator Multi-Mode</p>
+                        <p className="text-xs text-slate-500">Kuadrat, Trig, Log & Kalkulus</p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('quiz')}
+                      className="w-full p-3.5 rounded-xl border border-slate-100 hover:border-purple-200 bg-purple-50/40 hover:bg-purple-50 flex items-center gap-3.5 text-left transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0">
+                        <Target className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-800">Kuis Latihan Berwaktu</p>
+                        <p className="text-xs text-slate-500">Uji kemampuan & raih XP ekstra</p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('aitutor')}
+                      className="w-full p-3.5 rounded-xl border border-slate-100 hover:border-indigo-200 bg-indigo-50/40 hover:bg-indigo-50 flex items-center gap-3.5 text-left transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0">
+                        <BrainCircuit className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-slate-800">MathSmart AI Tutor</p>
+                        <p className="text-xs text-slate-500">Pembahasan soal bertahap 24/7</p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200/60 flex items-center gap-3">
+                  <Lightbulb className="w-5 h-5 text-amber-600 shrink-0" />
+                  <p className="text-xs text-amber-900 leading-relaxed">
+                    <strong>Tips Belajar:</strong> Selesaikan latihan interaktif di akhir setiap materi untuk mengklaim XP!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ====================================================================
+            2. HALAMAN MATERI PEMBELAJARAN (KELAS 10, 11, 12)
+           ==================================================================== */}
+        {activeTab === 'materials' && (
+          <div className="space-y-6">
+            {!activeMaterial ? (
+              <>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl font-extrabold text-slate-800">Materi Pembelajaran SMA</h2>
+                    <p className="text-sm text-slate-500">Pilih jenjang kelas untuk mempelajari konsep, rumus penting, dan latihan interaktif.</p>
+                  </div>
+
+                  {/* Filter Kelas 10, 11, 12 */}
+                  <div className="inline-flex p-1.5 bg-white rounded-2xl border border-slate-200 shadow-xs self-start">
+                    {[10, 11, 12].map((g) => (
+                      <button
+                        key={g}
+                        onClick={() => setSelectedGradeFilter(g)}
+                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                          Number(selectedGradeFilter) === g
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm'
+                            : 'text-slate-600 hover:text-indigo-600'
+                        }`}
+                      >
+                        Kelas {g}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Grid Kartu Materi */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {MATERIALS_DATA.filter((m) => m.grade === Number(selectedGradeFilter)).map((mat, idx) => {
+                    const isDone = progress.completedMaterials.includes(mat.id);
+                    return (
+                      <div
+                        key={mat.id}
+                        className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:shadow-md hover:border-indigo-200 transition-all flex flex-col justify-between group"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">
+                              Bab {idx + 1} • {mat.category}
+                            </span>
+                            {isDone ? (
+                              <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                Selesai
+                              </span>
+                            ) : (
+                              <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">
+                                +{mat.xp} XP
+                              </span>
+                            )}
+                          </div>
+
+                          <h3 className="text-lg font-extrabold text-slate-800 group-hover:text-indigo-700 transition-colors mb-2">
+                            {mat.title}
+                          </h3>
+                          <p className="text-sm text-slate-600 leading-relaxed mb-4">{mat.summary}</p>
+                        </div>
+
+                        <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                            <Clock className="w-3.5 h-3.5" />
+                            {mat.duration}
+                          </span>
+                          <button
+                            onClick={() => handleOpenMaterial(mat)}
+                            className="inline-flex items-center gap-1.5 text-sm font-bold text-indigo-600 hover:text-purple-700 cursor-pointer"
+                          >
+                            <span>{isDone ? 'Pelajari Ulang' : 'Mulai Materi'}</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              /* ---------------- TAMPILAN DETAIL MATERI ---------------- */
+              <div className="space-y-6 max-w-4xl mx-auto">
+                <button
+                  onClick={() => setActiveMaterial(null)}
+                  className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-indigo-700 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-xs"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>Kembali ke Daftar Materi Kelas {activeMaterial.grade}</span>
+                </button>
+
+                {/* Header Materi */}
+                <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">
+                      Kelas {activeMaterial.grade} SMA
+                    </span>
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-700">
+                      {activeMaterial.category}
+                    </span>
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-700">
+                      +{activeMaterial.xp} XP
+                    </span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">{activeMaterial.title}</h2>
+                  <p className="text-slate-600 leading-relaxed">{activeMaterial.concept}</p>
+
+                  {/* Kotak Rumus Penting */}
+                  <div className="mt-6 rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200/80 p-5">
+                    <div className="flex items-center gap-2 text-indigo-800 font-extrabold text-base mb-3">
+                      <FunctionSquare className="w-5 h-5 text-indigo-600" />
+                      <span>Rumus Penting</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {activeMaterial.formulas.map((f, i) => (
+                        <div key={i} className="bg-white/90 rounded-xl p-3.5 border border-indigo-100 shadow-2xs">
+                          <p className="text-xs font-bold text-slate-500 mb-1">{f.label}</p>
+                          <p className="font-mono text-sm sm:text-base font-bold text-indigo-900">{f.formula}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Contoh Soal & Pembahasan Langkah demi Langkah */}
+                  <div className="mt-6 rounded-2xl border border-slate-200 p-5 bg-slate-50/60">
+                    <div className="flex items-center gap-2 text-slate-800 font-extrabold text-base mb-2">
+                      <BookOpen className="w-5 h-5 text-purple-600" />
+                      <span>Contoh Soal & Pembahasan</span>
+                    </div>
+                    <p className="font-semibold text-slate-800 bg-white p-4 rounded-xl border border-slate-200/80 mb-4">
+                      {activeMaterial.example.question}
+                    </p>
+                    <div className="space-y-2.5">
+                      <p className="text-xs font-bold uppercase tracking-wider text-purple-700">Langkah Penyelesaian:</p>
+                      {activeMaterial.example.steps.map((step, idx) => (
+                        <div key={idx} className="flex items-start gap-3 text-sm text-slate-700 bg-white p-3 rounded-xl border border-slate-100">
+                          <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <span className="leading-relaxed">{step}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Latihan Soal Interaktif di Dalam Materi */}
+                  <div className="mt-6 rounded-2xl border-2 border-indigo-200 bg-white p-5 sm:p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-indigo-600" />
+                        <h3 className="font-extrabold text-slate-800">Uji Pemahaman Interaktif</h3>
+                      </div>
+                      {progress.completedMaterials.includes(activeMaterial.id) && (
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                          ✓ Materi Telah Diselesaikan
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-sm sm:text-base font-semibold text-slate-800 mb-4">
+                      {activeMaterial.practice.question}
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                      {activeMaterial.practice.options.map((opt, idx) => {
+                        let btnStyle = 'border-slate-200 hover:border-indigo-400 bg-slate-50/50 text-slate-700';
+                        if (practiceSubmitted) {
+                          if (idx === activeMaterial.practice.correctIndex) {
+                            btnStyle = 'border-emerald-500 bg-emerald-50 text-emerald-900 font-bold';
+                          } else if (idx === practiceAnswer) {
+                            btnStyle = 'border-rose-500 bg-rose-50 text-rose-900';
+                          }
+                        } else if (practiceAnswer === idx) {
+                          btnStyle = 'border-indigo-600 bg-indigo-50 text-indigo-900 font-bold';
+                        }
+
+                        return (
+                          <button
+                            key={idx}
+                            disabled={practiceSubmitted}
+                            onClick={() => setPracticeAnswer(idx)}
+                            className={`p-3.5 rounded-xl border-2 text-left text-sm transition-all flex items-center gap-3 ${btnStyle}`}
+                          >
+                            <span className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs shrink-0">
+                              {String.fromCharCode(65 + idx)}
+                            </span>
+                            <span>{opt}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {!practiceSubmitted ? (
+                      <button
+                        disabled={practiceAnswer === null}
+                        onClick={() => {
+                          setPracticeSubmitted(true);
+                          handleCompleteMaterial(activeMaterial);
+                        }}
+                        className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 disabled:opacity-40 text-white font-bold px-6 py-3 rounded-xl text-sm shadow-sm transition-all"
+                      >
+                        Periksa Jawaban & Klaim +{activeMaterial.xp} XP
+                      </button>
+                    ) : (
+                      <div
+                        className={`p-4 rounded-xl border ${
+                          practiceAnswer === activeMaterial.practice.correctIndex
+                            ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                            : 'bg-amber-50 border-amber-200 text-amber-900'
+                        }`}
+                      >
+                        <p className="font-bold text-sm mb-1">
+                          {practiceAnswer === activeMaterial.practice.correctIndex
+                            ? '🎉 Tepat Sekali! Jawabanmu benar.'
+                            : '💡 Hampir tepat! Mari simak pembahasannya:'}
+                        </p>
+                        <p className="text-sm leading-relaxed">{activeMaterial.practice.explanation}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ====================================================================
+            3. FITUR KALKULATOR MATEMATIKA MULTI-MODE
+           ==================================================================== */}
+        {activeTab === 'calculator' && (
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div>
+              <h2 className="text-2xl font-extrabold text-slate-800">Kalkulator Matematika SMA</h2>
+              <p className="text-sm text-slate-500">Alat hitung interaktif untuk membantu mengecek jawaban aljabar, kuadrat, trigonometri, logaritma, dan kalkulus.</p>
+            </div>
+
+            {/* Tab Pilihan Mode Kalkulator */}
+            <div className="flex flex-wrap gap-2 bg-white p-2 rounded-2xl border border-slate-200 shadow-xs">
+              {[
+                { id: 'scientific', label: '1. Ilmiah Dasar' },
+                { id: 'quadratic', label: '2. Persamaan Kuadrat' },
+                { id: 'trig', label: '3. Trigonometri' },
+                { id: 'log', label: '4. Logaritma' },
+                { id: 'calculus', label: '5. Turunan & Integral' }
+              ].map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => setCalcMode(m.id)}
+                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    calcMode === m.id
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm'
+                      : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-700'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+
+            {/* MODE 1: KALKULATOR ILMIAH DASAR */}
+            {calcMode === 'scientific' && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+                <div className="bg-slate-900 text-white p-5 rounded-2xl text-right space-y-1">
+                  <input
+                    type="text"
+                    value={sciInput}
+                    onChange={(e) => setSciInput(e.target.value)}
+                    className="w-full bg-transparent text-right text-slate-300 font-mono text-base focus:outline-none"
+                    placeholder="Ketik ekspresi matematika..."
+                  />
+                  <div className="text-3xl font-extrabold font-mono text-indigo-300 truncate">{sciResult}</div>
+                </div>
+
+                <div className="grid grid-cols-4 gap-2.5">
+                  {['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '^', '+'].map((btn) => (
+                    <button
+                      key={btn}
+                      onClick={() => setSciInput((prev) => prev + btn)}
+                      className="p-3.5 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-800 font-bold text-lg transition-colors"
+                    >
+                      {btn}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setSciInput((prev) => prev + '(')}
+                    className="p-3 rounded-xl bg-indigo-50 text-indigo-700 font-bold"
+                  >
+                    (
+                  </button>
+                  <button
+                    onClick={() => setSciInput((prev) => prev + ')')}
+                    className="p-3 rounded-xl bg-indigo-50 text-indigo-700 font-bold"
+                  >
+                    )
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSciInput('');
+                      setSciResult('0');
+                    }}
+                    className="p-3 rounded-xl bg-rose-50 text-rose-600 font-bold"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    onClick={() => evaluateScientific(sciInput)}
+                    className="p-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold text-lg shadow-sm"
+                  >
+                    =
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* MODE 2: PENYELESAI PERSAMAAN KUADRAT */}
+            {calcMode === 'quadratic' && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-5">
+                <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100">
+                  <h3 className="font-extrabold text-indigo-950">Penyelesai Persamaan Kuadrat: ax² + bx + c = 0</h3>
+                  <p className="text-xs text-indigo-700 mt-0.5">Masukkan nilai koefisien a, b, dan c untuk menghitung Diskriminan, akar-akar, dan titik puncak.</p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Koefisien a</label>
+                    <input
+                      type="number"
+                      value={quadA}
+                      onChange={(e) => setQuadA(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 font-mono font-bold focus:outline-indigo-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Koefisien b</label>
+                    <input
+                      type="number"
+                      value={quadB}
+                      onChange={(e) => setQuadB(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 font-mono font-bold focus:outline-indigo-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Konstanta c</label>
+                    <input
+                      type="number"
+                      value={quadC}
+                      onChange={(e) => setQuadC(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 font-mono font-bold focus:outline-indigo-600"
+                    />
+                  </div>
+                </div>
+
+                {quadraticAnalysis.valid ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                      <p className="text-xs font-bold text-slate-500">Diskriminan (D = b² - 4ac)</p>
+                      <p className="text-2xl font-extrabold text-indigo-700 mt-1">{quadraticAnalysis.D}</p>
+                      <p className="text-xs font-medium text-slate-600 mt-1">{quadraticAnalysis.type}</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                      <p className="text-xs font-bold text-slate-500">Akar-Akar Persamaan</p>
+                      <p className="text-lg font-extrabold text-purple-700 mt-1">
+                        x₁ = {quadraticAnalysis.x1} &nbsp;|&nbsp; x₂ = {quadraticAnalysis.x2}
+                      </p>
+                      <p className="text-xs font-medium text-slate-600 mt-1">Titik Puncak Parabola: {quadraticAnalysis.vertex}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm font-semibold text-rose-600">{quadraticAnalysis.message}</p>
+                )}
+              </div>
+            )}
+
+            {/* MODE 3: KALKULATOR TRIGONOMETRI */}
+            {calcMode === 'trig' && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h3 className="font-extrabold text-slate-800">Kalkulator Trigonometri (Sin, Cos, Tan)</h3>
+                    <p className="text-xs text-slate-500">Pilih satuan sudut derajat atau radian, atau klik sudut istimewa.</p>
+                  </div>
+                  <div className="inline-flex bg-slate-100 p-1 rounded-xl self-start">
+                    <button
+                      onClick={() => setTrigUnit('deg')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold ${trigUnit === 'deg' ? 'bg-white text-indigo-700 shadow-2xs' : 'text-slate-600'}`}
+                    >
+                      Derajat (°)
+                    </button>
+                    <button
+                      onClick={() => setTrigUnit('rad')}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold ${trigUnit === 'rad' ? 'bg-white text-indigo-700 shadow-2xs' : 'text-slate-600'}`}
+                    >
+                      Radian (rad)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Besar Sudut ({trigUnit === 'deg' ? 'Derajat' : 'Radian'})</label>
+                  <input
+                    type="number"
+                    value={trigAngle}
+                    onChange={(e) => setTrigAngle(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 font-mono text-lg font-bold focus:outline-indigo-600"
+                  />
+                  {trigUnit === 'deg' && (
+                    <div className="flex flex-wrap gap-2 mt-2.5">
+                      {[0, 30, 45, 60, 90, 120, 150, 180, 270, 360].map((deg) => (
+                        <button
+                          key={deg}
+                          onClick={() => setTrigAngle(String(deg))}
+                          className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold"
+                        >
+                          {deg}°
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-center">
+                    <p className="text-xs font-bold text-blue-700">sin({trigAngle}{trigUnit === 'deg' ? '°' : ''})</p>
+                    <p className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{trigValues.sin}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-center">
+                    <p className="text-xs font-bold text-indigo-700">cos({trigAngle}{trigUnit === 'deg' ? '°' : ''})</p>
+                    <p className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{trigValues.cos}</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 text-center">
+                    <p className="text-xs font-bold text-purple-700">tan({trigAngle}{trigUnit === 'deg' ? '°' : ''})</p>
+                    <p className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{trigValues.tan}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* MODE 4: KALKULATOR LOGARITMA */}
+            {calcMode === 'log' && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-5">
+                <div>
+                  <h3 className="font-extrabold text-slate-800">Kalkulator Logaritma (ᵃlog b)</h3>
+                  <p className="text-xs text-slate-500">Hitung nilai logaritma dengan basis kustom maupun logaritma natural (ln).</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Basis (a)</label>
+                    <input
+                      type="number"
+                      value={logBase}
+                      onChange={(e) => setLogBase(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Numerus (b)</label>
+                    <input
+                      type="number"
+                      value={logNum}
+                      onChange={(e) => setLogNum(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                </div>
+
+                {logResult.valid ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100">
+                      <p className="text-xs font-bold text-indigo-700">Hasil ⁽{logBase}⁾log({logNum})</p>
+                      <p className="text-2xl font-extrabold text-slate-900 font-mono mt-1">{logResult.value}</p>
+                      <p className="text-xs text-slate-500 mt-1">Karena {logBase}^{logResult.value} ≈ {logNum}</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-purple-50 border border-purple-100">
+                      <p className="text-xs font-bold text-purple-700">Logaritma Natural ln({logNum})</p>
+                      <p className="text-2xl font-extrabold text-slate-900 font-mono mt-1">{logResult.lnValue}</p>
+                      <p className="text-xs text-slate-500 mt-1">Basis bilangan Euler (e ≈ 2,71828)</p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-sm font-semibold text-rose-600">{logResult.msg}</p>
+                )}
+              </div>
+            )}
+
+            {/* MODE 5: KALKULATOR TURUNAN & INTEGRAL SEDERHANA */}
+            {calcMode === 'calculus' && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-5">
+                <div>
+                  <h3 className="font-extrabold text-slate-800">Kalkulator Turunan & Integral Polinomial</h3>
+                  <p className="text-xs text-slate-500">Atur fungsi f(x) = a·xⁿ + b·x + c untuk melihat hasil turunan pertama f′(x) dan integral tak tentunya ∫ f(x) dx.</p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Koefisien a</label>
+                    <input
+                      type="number"
+                      value={calcPolyCoeffA}
+                      onChange={(e) => setCalcPolyCoeffA(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Pangkat n</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={calcPolyExpA}
+                      onChange={(e) => setCalcPolyExpA(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Koefisien b (x)</label>
+                    <input
+                      type="number"
+                      value={calcPolyCoeffB}
+                      onChange={(e) => setCalcPolyCoeffB(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-1">Konstanta c</label>
+                    <input
+                      type="number"
+                      value={calcPolyConstC}
+                      onChange={(e) => setCalcPolyConstC(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono font-bold"
+                    />
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-900 text-white font-mono text-sm">
+                  Fungsi Awal: <span className="text-amber-300 font-bold">f(x) = {calcPolyCoeffA}x^{calcPolyExpA} {Number(calcPolyCoeffB) >= 0 ? '+' : ''} {calcPolyCoeffB}x {Number(calcPolyConstC) >= 0 ? '+' : ''} {calcPolyConstC}</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200">
+                    <p className="text-xs font-bold uppercase text-blue-700">Turunan Pertama f′(x)</p>
+                    <p className="text-lg font-extrabold font-mono text-slate-900 mt-1">{calculusResult.derivative}</p>
+                    <p className="text-xs text-slate-600 mt-1">Menggunakan aturan pangkat: d/dx(axⁿ) = a·n·xⁿ⁻¹</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-purple-50 border border-purple-200">
+                    <p className="text-xs font-bold uppercase text-purple-700">Integral Tak Tentu ∫ f(x) dx</p>
+                    <p className="text-lg font-extrabold font-mono text-slate-900 mt-1">{calculusResult.integral}</p>
+                    <p className="text-xs text-slate-600 mt-1">Menggunakan anti-turunan: ∫ axⁿ dx = [a/(n+1)]xⁿ⁺¹ + C</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ====================================================================
+            4. HALAMAN KUIS & LATIHAN SOAL TERPADU
+           ==================================================================== */}
+        {activeTab === 'quiz' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            {quizState === 'setup' && (
+              <>
+                <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-11 h-11 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center">
+                      <Target className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-extrabold text-slate-800">Kuis & Latihan Soal SMA</h2>
+                      <p className="text-sm text-slate-500">Pilih jenjang kelas dan tingkat kesulitan soal, lalu selesaikan sebelum waktu habis!</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Pilih Jenjang Kelas</label>
+                      <select
+                        value={quizGrade}
+                        onChange={(e) => setQuizGrade(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-300 font-semibold text-slate-700 bg-white focus:outline-indigo-600"
+                      >
+                        <option value="all">Semua Kelas (10, 11, 12)</option>
+                        <option value="10">Kelas 10 SMA</option>
+                        <option value="11">Kelas 11 SMA</option>
+                        <option value="12">Kelas 12 SMA</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Tingkat Kesulitan</label>
+                      <select
+                        value={quizDifficulty}
+                        onChange={(e) => setQuizDifficulty(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-300 font-semibold text-slate-700 bg-white focus:outline-indigo-600"
+                      >
+                        <option value="all">Semua Tingkat (Mudah - Sulit)</option>
+                        <option value="Mudah">Mudah</option>
+                        <option value="Sedang">Sedang</option>
+                        <option value="Sulit">Sulit</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={startQuiz}
+                    className="mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-7 py-3.5 rounded-xl shadow-md transition-all cursor-pointer"
+                  >
+                    <Play className="w-4 h-4 fill-white" />
+                    <span>Mulai Kuis Sekarang</span>
+                  </button>
+                </div>
+
+                {/* Riwayat Nilai Kuis */}
+                <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+                  <div className="flex items-center gap-2 mb-4">
+                    <History className="w-5 h-5 text-indigo-600" />
+                    <h3 className="font-extrabold text-lg text-slate-800">Riwayat Nilai Latihan</h3>
+                  </div>
+
+                  {progress.quizHistory.length === 0 ? (
+                    <p className="text-sm text-slate-500">Belum ada riwayat kuis. Mulai kerjakan kuis pertamamu di atas!</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-slate-200 text-xs font-bold uppercase text-slate-400">
+                            <th className="py-3 px-2">Tanggal</th>
+                            <th className="py-3 px-2">Kelas</th>
+                            <th className="py-3 px-2">Kesulitan</th>
+                            <th className="py-3 px-2">Benar</th>
+                            <th className="py-3 px-2">Skor</th>
+                            <th className="py-3 px-2">XP</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-sm">
+                          {progress.quizHistory.map((item) => (
+                            <tr key={item.id} className="hover:bg-slate-50">
+                              <td className="py-3 px-2 text-slate-600">{item.date}</td>
+                              <td className="py-3 px-2 font-semibold">Kelas {item.grade}</td>
+                              <td className="py-3 px-2">
+                                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700">
+                                  {item.difficulty}
+                                </span>
+                              </td>
+                              <td className="py-3 px-2 text-slate-700">{item.correct}/{item.total}</td>
+                              <td className="py-3 px-2 font-extrabold text-indigo-700">{item.score}</td>
+                              <td className="py-3 px-2 font-bold text-amber-600">+{item.xpEarned} XP</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+
+            {quizState === 'running' && activeQuestions.length > 0 && (
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+                {/* Top Bar Timer & Nomor Soal */}
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                  <div>
+                    <span className="text-xs font-bold uppercase text-indigo-600">
+                      Soal {currentQIndex + 1} dari {activeQuestions.length} • {activeQuestions[currentQIndex].topic}
+                    </span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                        Kelas {activeQuestions[currentQIndex].grade}
+                      </span>
+                      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                        {activeQuestions[currentQIndex].difficulty}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono font-extrabold text-sm ${timeLeft < 30 ? 'bg-rose-100 text-rose-700 animate-pulse' : 'bg-indigo-50 text-indigo-700'}`}>
+                    <Clock className="w-4 h-4" />
+                    <span>{formatTime(timeLeft)}</span>
+                  </div>
+                </div>
+
+                {/* Pertanyaan */}
+                <p className="text-lg font-bold text-slate-900 leading-relaxed">
+                  {activeQuestions[currentQIndex].question}
+                </p>
+
+                {/* Pilihan Jawaban */}
+                <div className="space-y-3">
+                  {activeQuestions[currentQIndex].options.map((opt, idx) => {
+                    const isSelected = userAnswers[currentQIndex] === idx;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setUserAnswers((prev) => ({ ...prev, [currentQIndex]: idx }))}
+                        className={`w-full p-4 rounded-2xl border-2 text-left text-sm sm:text-base transition-all flex items-center gap-3.5 ${
+                          isSelected
+                            ? 'border-indigo-600 bg-indigo-50/80 text-indigo-950 font-bold shadow-2xs'
+                            : 'border-slate-200 hover:border-indigo-300 text-slate-700'
+                        }`}
+                      >
+                        <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                          {String.fromCharCode(65 + idx)}
+                        </span>
+                        <span>{opt}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Navigasi Soal */}
+                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                  <button
+                    disabled={currentQIndex === 0}
+                    onClick={() => setCurrentQIndex((prev) => prev - 1)}
+                    className="px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-600 disabled:opacity-40 hover:bg-slate-50"
+                  >
+                    Sebelumnya
+                  </button>
+
+                  {currentQIndex < activeQuestions.length - 1 ? (
+                    <button
+                      onClick={() => setCurrentQIndex((prev) => prev + 1)}
+                      className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold"
+                    >
+                      Soal Berikutnya
+                    </button>
+                  ) : (
+                    <button
+                      onClick={finishQuiz}
+                      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-sm font-extrabold shadow-sm"
+                    >
+                      Selesai & Koreksi Otomatis
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {quizState === 'result' && (
+              <div className="space-y-6">
+                <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white rounded-3xl p-6 sm:p-8 text-center shadow-md">
+                  <Trophy className="w-12 h-12 mx-auto text-amber-300 mb-2" />
+                  <h2 className="text-2xl sm:text-3xl font-extrabold">Hasil Kuis Latihan</h2>
+                  <p className="text-blue-100 text-sm mt-1">Skor dan pembahasan lengkapmu telah tersimpan di riwayat belajar.</p>
+
+                  <div className="mt-5 inline-flex items-center gap-6 bg-white/15 backdrop-blur-xs px-6 py-4 rounded-2xl border border-white/20">
+                    <div>
+                      <p className="text-xs uppercase text-blue-100 font-semibold">Skor Akhir</p>
+                      <p className="text-3xl font-extrabold">{progress.quizHistory[0]?.score ?? 0}</p>
+                    </div>
+                    <div className="h-10 w-px bg-white/20" />
+                    <div>
+                      <p className="text-xs uppercase text-blue-100 font-semibold">Jawaban Benar</p>
+                      <p className="text-3xl font-extrabold">
+                        {progress.quizHistory[0]?.correct}/{progress.quizHistory[0]?.total}
+                      </p>
+                    </div>
+                    <div className="h-10 w-px bg-white/20" />
+                    <div>
+                      <p className="text-xs uppercase text-blue-100 font-semibold">Bonus XP</p>
+                      <p className="text-3xl font-extrabold text-amber-300">+{progress.quizHistory[0]?.xpEarned}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    <button
+                      onClick={() => setQuizState('setup')}
+                      className="bg-white text-indigo-700 font-extrabold px-6 py-2.5 rounded-xl text-sm shadow-sm hover:bg-blue-50"
+                    >
+                      Kembali ke Menu Kuis
+                    </button>
+                  </div>
+                </div>
+
+                {/* Pembahasan Setiap Nomor Soal */}
+                <div className="space-y-4">
+                  <h3 className="font-extrabold text-lg text-slate-800">Pembahasan Lengkap Setiap Soal</h3>
+                  {activeQuestions.map((q, idx) => {
+                    const userChoice = userAnswers[idx];
+                    const isCorrect = userChoice === q.correct;
+                    return (
+                      <div key={q.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-bold text-slate-500">Nomor {idx + 1} • {q.topic}</span>
+                          {isCorrect ? (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                              <Check className="w-3.5 h-3.5" /> Benar
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full">
+                              <X className="w-3.5 h-3.5" /> Kurang Tepat
+                            </span>
+                          )}
+                        </div>
+                        <p className="font-bold text-slate-800 mb-3">{q.question}</p>
+                        <div className="text-xs sm:text-sm space-y-1 mb-3">
+                          <p>
+                            <span className="font-semibold text-slate-500">Jawabanmu: </span>
+                            <span className={isCorrect ? 'font-bold text-emerald-700' : 'font-bold text-rose-600'}>
+                              {userChoice !== undefined ? q.options[userChoice] : 'Tidak dijawab'}
+                            </span>
+                          </p>
+                          <p>
+                            <span className="font-semibold text-slate-500">Kunci Jawaban: </span>
+                            <span className="font-bold text-emerald-700">{q.options[q.correct]}</span>
+                          </p>
+                        </div>
+                        <div className="p-3.5 rounded-xl bg-indigo-50/70 border border-indigo-100 text-xs sm:text-sm text-slate-700">
+                          <strong className="text-indigo-800">Pembahasan:</strong> {q.explanation}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ====================================================================
+            5. FITUR AI TUTOR INTERAKTIF
+           ==================================================================== */}
+        {activeTab === 'aitutor' && (
+          <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[78vh] min-h-[540px]">
+            {/* Header AI Tutor + Pengaturan Gaya Penjelasan */}
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center">
+                  <BrainCircuit className="w-6 h-6 text-amber-300" />
+                </div>
+                <div>
+                  <h2 className="font-extrabold text-base sm:text-lg">MathSmart AI Tutor</h2>
+                  <p className="text-xs text-blue-100">Asisten belajar adaptif Kelas {userProfile.grade} SMA</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 bg-black/20 p-1 rounded-xl self-start">
+                {[
+                  { id: 'simple', label: 'Bahasa Sederhana' },
+                  { id: 'step', label: 'Langkah Bertahap' },
+                  { id: 'challenge', label: 'Latihan Serupa' }
+                ].map((modeItem) => (
+                  <button
+                    key={modeItem.id}
+                    onClick={() => setAiMode(modeItem.id)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                      aiMode === modeItem.id ? 'bg-white text-indigo-700' : 'text-blue-100 hover:text-white'
+                    }`}
+                  >
+                    {modeItem.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Area Percakapan */}
+            <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/60">
+              {chatMessages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  {msg.sender === 'user' ? (
+                    <div className="max-w-[82%] bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-2xl rounded-br-xs text-sm shadow-xs">
+                      {msg.text}
+                    </div>
+                  ) : (
+                    <div className="max-w-[90%] sm:max-w-[82%] bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl rounded-bl-xs shadow-2xs space-y-2.5">
+                      {msg.title && <h4 className="font-extrabold text-indigo-800 text-sm sm:text-base">{msg.title}</h4>}
+                      <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{msg.text}</p>
+                      {msg.formula && (
+                        <div className="px-3.5 py-2 rounded-xl bg-indigo-50 border border-indigo-100 font-mono text-xs sm:text-sm font-bold text-indigo-900">
+                          {msg.formula}
+                        </div>
+                      )}
+                      {msg.followUp && (
+                        <p className="text-xs font-medium text-purple-700 pt-1">💡 {msg.followUp}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Quick Prompts & Input Chat */}
+            <div className="p-4 bg-white border-t border-slate-200 space-y-3">
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {[
+                  'Jelaskan rumus turunan fungsi',
+                  'Selesaikan x^2 - 5x + 6 = 0',
+                  'Cara cepat limit bentuk 0/0',
+                  'Konsep dasar integral tak tentu',
+                  'Trik sudut istimewa trigonometri'
+                ].map((qp, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSendChat(qp)}
+                    className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-100 transition-colors"
+                  >
+                    {qp}
+                  </button>
+                ))}
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSendChat();
+                }}
+                className="flex gap-2"
+              >
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder="Tanyakan rumus atau ketik soal matematika (misal: x^2 - 7x + 12 = 0)..."
+                  className="flex-1 px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
+                />
+                <button
+                  type="submit"
+                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-sm inline-flex items-center gap-2 shadow-sm"
+                >
+                  <Send className="w-4 h-4" />
+                  <span className="hidden sm:inline">Kirim</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ====================================================================
+            6. HALAMAN GAMIFIKASI (BADGE & LEADERBOARD)
+           ==================================================================== */}
+        {activeTab === 'gamification' && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-extrabold text-slate-800">Pencapaian & Papan Peringkat</h2>
+              <p className="text-sm text-slate-500">Kumpulkan XP dari setiap materi dan kuis untuk membuka badge eksklusif dan naik ke puncak leaderboard!</p>
+            </div>
+
+            {/* Koleksi Badge */}
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-extrabold text-lg text-slate-800">Koleksi Badge Pencapaian</h3>
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700">
+                  {unlockedBadges.length} / {BADGES_CONFIG.length} Terbuka
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                {BADGES_CONFIG.map((badge) => {
+                  const isUnlocked = unlockedBadges.includes(badge.id);
+                  return (
+                    <div
+                      key={badge.id}
+                      className={`p-4 rounded-2xl border text-center transition-all ${
+                        isUnlocked
+                          ? 'bg-gradient-to-b from-white to-indigo-50/50 border-indigo-200 shadow-xs'
+                          : 'bg-slate-50 border-slate-200 opacity-55 grayscale'
+                      }`}
+                    >
+                      <div
+                        className={`w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br ${badge.color} text-white text-2xl flex items-center justify-center shadow-sm mb-3`}
+                      >
+                        {badge.icon}
+                      </div>
+                      <h4 className="font-extrabold text-sm text-slate-800">{badge.title}</h4>
+                      <p className="text-xs text-slate-500 mt-1 leading-relaxed">{badge.desc}</p>
+                      <span
+                        className={`inline-block mt-3 text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                          isUnlocked ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
+                        }`}
+                      >
+                        {isUnlocked ? 'Diraih ✓' : 'Terkunci'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Leaderboard Siswa SMA */}
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+              <div className="flex items-center gap-2 mb-4">
+                <Trophy className="w-5 h-5 text-amber-500" />
+                <h3 className="font-extrabold text-lg text-slate-800">Leaderboard Siswa MathSmart</h3>
+              </div>
+
+              <div className="space-y-2.5">
+                {leaderboardList.map((student, idx) => {
+                  const rank = idx + 1;
+                  return (
+                    <div
+                      key={student.id}
+                      className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                        student.isCurrentUser
+                          ? 'bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-300 shadow-2xs'
+                          : 'bg-white border-slate-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`w-8 h-8 rounded-full font-extrabold text-sm flex items-center justify-center ${
+                            rank === 1
+                              ? 'bg-amber-400 text-slate-900'
+                              : rank === 2
+                              ? 'bg-slate-300 text-slate-800'
+                              : rank === 3
+                              ? 'bg-amber-600 text-white'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {rank}
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-xl">
+                          {student.avatar}
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm sm:text-base text-slate-800">{student.name}</p>
+                          <p className="text-xs text-slate-500">Kelas {student.grade} SMA</p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="font-extrabold text-indigo-700 text-sm sm:text-base">{student.xp} XP</span>
+                        <p className="text-[11px] font-semibold text-slate-400">Level {Math.floor(student.xp / 200) + 1}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ====================================================================
+            7. HALAMAN PROFIL PENGGUNA
+           ==================================================================== */}
+        {activeTab === 'profile' && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+                <div className="flex items-center gap-4">
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center text-4xl shadow-xs">
+                    {userProfile.avatar}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-2xl font-extrabold text-slate-900">{userProfile.name}</h2>
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                        Level {level}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-500 mt-0.5">Siswa Kelas {userProfile.grade} SMA • Target Harian: {userProfile.dailyTarget} Aktivitas</p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setTempProfile(userProfile);
+                    setIsEditingProfile(!isEditingProfile);
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-indigo-50 hover:text-indigo-700 text-sm font-bold text-slate-700 self-start"
+                >
+                  <Edit3 className="w-4 h-4" />
+                  <span>{isEditingProfile ? 'Batal Edit' : 'Edit Profil'}</span>
+                </button>
+              </div>
+
+              {isEditingProfile && (
+                <div className="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                  <h3 className="font-extrabold text-sm text-slate-800">Perbarui Data Siswa</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap</label>
+                      <input
+                        type="text"
+                        value={tempProfile.name}
+                        onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Jenjang Kelas</label>
+                      <select
+                        value={tempProfile.grade}
+                        onChange={(e) => setTempProfile({ ...tempProfile, grade: Number(e.target.value) })}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white"
+                      >
+                        <option value={10}>Kelas 10 SMA</option>
+                        <option value={11}>Kelas 11 SMA</option>
+                        <option value={12}>Kelas 12 SMA</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Target Belajar Harian</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="10"
+                        value={tempProfile.dailyTarget}
+                        onChange={(e) => setTempProfile({ ...tempProfile, dailyTarget: Number(e.target.value) || 1 })}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 mb-2">Pilih Avatar Profil</label>
+                    <div className="flex flex-wrap gap-2">
+                      {AVATAR_OPTIONS.map((av) => (
+                        <button
+                          key={av}
+                          type="button"
+                          onClick={() => setTempProfile({ ...tempProfile, avatar: av })}
+                          className={`w-11 h-11 rounded-xl text-2xl flex items-center justify-center border-2 transition-all ${
+                            tempProfile.avatar === av ? 'border-indigo-600 bg-indigo-50 scale-105' : 'border-slate-200 bg-white'
+                          }`}
+                        >
+                          {av}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={saveProfileChanges}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-sm"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Simpan Perubahan</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Ringkasan Statistik Profil */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100 text-center">
+                  <p className="text-xs font-bold text-blue-700">Total XP</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1">{progress.xp}</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 text-center">
+                  <p className="text-xs font-bold text-indigo-700">Materi Selesai</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1">{progress.completedMaterials.length}</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 text-center">
+                  <p className="text-xs font-bold text-purple-700">Rata-Rata Kuis</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1">{averageQuizScore}</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-100 text-center">
+                  <p className="text-xs font-bold text-amber-700">Badge Diraih</p>
+                  <p className="text-2xl font-extrabold text-slate-900 mt-1">{unlockedBadges.length}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
